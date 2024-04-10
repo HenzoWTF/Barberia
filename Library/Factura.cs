@@ -10,7 +10,7 @@ namespace Library;
 public class Factura
 {
     [Key]
-    public int FacuraId { get; set; }
+    public int FacturaId { get; set; }
     public string BarberoName { get; set; }
 
     public DateTime Fecha = DateTime.Now;
@@ -19,4 +19,6 @@ public class Factura
     public float Total { get; set; }
     public float Pagado { get; set; }
     public float devuelta { get; set; }
+
+
 }

@@ -1,5 +1,6 @@
 html, body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-family: 'Irish Grover', Helvetica Neue, Helvetica, Arial, sans-serif;
+    src:url(/Font/IrishGrover-Regular.ttf)
 }
 
 a, .btn-link {

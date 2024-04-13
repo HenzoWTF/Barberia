@@ -6,8 +6,10 @@ using Microsoft.AspNetCore.Components.Server;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
+using System.Data;
 using System.Diagnostics;
 using System.Security.Claims;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Barberia.Components.Account
 {
@@ -88,6 +90,9 @@ namespace Barberia.Components.Account
             {
                 var userId = principal.FindFirst(options.ClaimsIdentity.UserIdClaimType)?.Value;
                 var email = principal.FindFirst(options.ClaimsIdentity.EmailClaimType)?.Value;
+                var role = principal.FindFirst(options.ClaimsIdentity.RoleClaimType)?.Value;
+                var nombre = principal.FindFirst(options.ClaimsIdentity.UserNameClaimType)?.Value;
+                var apellidos = principal.FindFirst(options.ClaimsIdentity.UserNameClaimType)?.Value;
 
                 if (userId != null && email != null)
                 {
@@ -95,6 +100,9 @@ namespace Barberia.Components.Account
                     {
                         UserId = userId,
                         Email = email,
+                        Role = role!,
+                        Nombre = nombre!,
+                        Apellidos = string.Empty
                     });
                 }
             }

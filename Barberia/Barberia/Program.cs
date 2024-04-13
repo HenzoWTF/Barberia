@@ -6,6 +6,7 @@ using Barberia.Services;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Radzen;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,6 +32,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
+builder.Services.AddScoped<NotificationService>();
 builder.Services.AddScoped<BarberoServices>();
 builder.Services.AddScoped<FacturaServices>();
 builder.Services.AddScoped<PeladasServices>();

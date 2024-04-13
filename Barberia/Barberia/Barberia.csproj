@@ -10,13 +10,20 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Library\Library.csproj" />
     <ProjectReference Include="..\Barberia.Client\Barberia.Client.csproj" />
-    <PackageReference Include="EntityFramework" Version="6.4.4" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.4" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.4" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.4" />
+    <PackageReference Include="Radzen.Blazor" Version="4.29.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Components\Pages\Factura\" />
+    <Folder Include="wwwroot\Imagenes\" />
+    <Folder Include="wwwroot\Font\" />
+    <Folder Include="wwwroot\NewFolder\" />
   </ItemGroup>
 
 </Project>

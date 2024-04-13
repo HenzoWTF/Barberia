@@ -2,7 +2,6 @@
 using Library;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Data.Entity;
 using EntityState = Microsoft.EntityFrameworkCore.EntityState;
 
 
@@ -10,16 +9,11 @@ namespace Barberia.Services;
 
 public class PeladasServices(ApplicationDbContext context)
 {
-    public async Task<IEnumerable<Peladas>> GetPeladas()
+    public async Task<List<Peladas>> GetPeladas()
     {
-        return await context.Peladas
-        .Select(d => new Peladas()
-        {
-            peladasId = d.peladasId,
-            peladasName = d.peladasName,
-            PrecioPelada = d.PrecioPelada
-        }).ToListAsync();
+        return await context.Peladas.ToListAsync();
     }
+
     public async Task<Peladas?> GetPelada(int id)
     {
         return await context.Peladas.FirstOrDefaultAsync(b => b.peladasId == id);

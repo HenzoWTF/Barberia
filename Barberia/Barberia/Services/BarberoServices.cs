@@ -1,7 +1,6 @@
 ﻿using Barberia.Data;
 using Library;
 using Microsoft.AspNetCore.Mvc;
-using System.Data.Entity;
 using Microsoft.EntityFrameworkCore;
 using EntityState = Microsoft.EntityFrameworkCore.EntityState;
 

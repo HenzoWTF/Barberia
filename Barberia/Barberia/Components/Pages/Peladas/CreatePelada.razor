@@ -1,0 +1,98 @@
+﻿@page "/CreatePelada"
+
+@rendermode InteractiveServer
+@inject NotificationService notificationServices
+@inject PeladasServices peladasServices
+@inject NavigationManager navigationManager
+@inject IJSRuntime JSRuntime
+
+
+<PageTitle>Peladas</PageTitle>
+<RadzenNotification />
+
+<EditForm Model="@peladas" OnValidSubmit="Guardar" FormName="peladas">
+    <DataAnnotationsValidator />
+
+    <section class="vh-100 gradient-custom">
+        <div class="container py-5 h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="fondo col-lg-3 col-xl-4" style="border-radius: 5rem;">
+
+                    <div class="card-body p-5 text-center">
+                        <h2 class="fw-bold mb-2 text-uppercase">Peladas</h2>
+
+                        <div class="tab-content">
+                            <div class="form-outline mb-4">
+                                <label><strong>Nombre</strong></label>
+                                <div class="input-group mb-3">
+                                    <InputText id="nombre" class="form-control" @bind-Value="peladas.peladasName"></InputText>
+                                    <ValidationMessage For="@(() => peladas.peladasName)"></ValidationMessage>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-4 mx-auto mb-4">
+                                    <label class="form-label" for="Cantidad"><strong>Precio:</strong></label>
+                                    <InputNumber id="cantidad" class="form-control" @bind-Value="peladas.PrecioPelada" placeholder="Ingrese un número para la cantidad"></InputNumber>
+                                </div>
+                            </div>
+
+                            <div>
+                                <button type="submit" class="w-20 btn btn-lg btn-success"><i class="bi bi-floppy"></i> Aceptar</button>
+                                <a href="/" class="w-20 btn btn-lg btn-primary"><i class="bi bi-arrow-left"></i> Volver</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</EditForm>
+
+@code {
+    public Peladas peladas = new Peladas();
+
+    public async Task Guardar()
+    {
+
+        if (string.IsNullOrEmpty(peladas.peladasName))
+        {
+            var Mensaje = new NotificationMessage
+                {
+                    Severity = NotificationSeverity.Error,
+                    Summary = "Error al guardar",
+                    Detail = "debe de llenar todos los campos",
+                    Duration = 1_000
+                };
+            notificationServices.Notify(Mensaje);
+            return;           
+        }
+        var response = await peladasServices.PostPeladas(peladas);
+        if (response != null)
+        {
+            var Mensaje1 = new NotificationMessage
+                {
+                    Severity = NotificationSeverity.Success,
+                    Summary = "Guardado",
+                    Detail = "Contacto guardado con exito",
+                    Duration = 1000
+                };
+            notificationServices.Notify(Mensaje1);
+            await Task.Delay(1000);
+            navigationManager.NavigateTo("/IndexPelada");
+        }
+        else
+        {
+            var Mensaje1 = new NotificationMessage
+                {
+                    Severity = NotificationSeverity.Error,
+                    Summary = "Error al guardar",
+                    Detail = "Ha ocurrido un error",
+                    Duration = 1_000
+                };
+            notificationServices.Notify(Mensaje1);
+        }
+
+    }
+}

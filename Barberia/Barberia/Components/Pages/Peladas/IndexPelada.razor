@@ -1,0 +1,90 @@
+﻿@page "/IndexPelada"
+@inject NotificationService notificationServices
+@inject PeladasServices peladasServices
+@inject NavigationManager navigationManager
+
+@rendermode InteractiveServer
+
+
+<PageTitle>Peladas</PageTitle>
+<RadzenNotification />
+
+<a href="/" class="w-20 btn btn-lg btn-outline-primary"><i class="bi bi-arrow-left"></i></a>
+<section class=" gradient-custom">
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center">
+            <div class="fondo " style="border-radius: 1rem;">
+
+                <div class="card-body p-5 text-center">
+                    <h2 class="fw-bold mb-2 text-uppercase">Peladas</h2>
+
+                    <div class="tab-content">
+                        <form>
+@* 
+                            <div>
+                                <button type="submit" class="w-20 btn btn-lg btn-success"><i class="bi bi-floppy"></i> Aceptar</button>
+                            </div> *@
+
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Nombre</th>
+                                        <th>Precio</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    @if (!peladas.Any())
+                                    {
+                                        <tr>
+                                            <td colspan="3" class="text-center">@mensaje</td>
+                                        </tr>
+                                    }
+                                    else
+                                    {
+                                        @foreach (var pelada in peladas)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    <img src="/Imagenes/Pelada1.png" style="width: 50px; height: auto; margin-right: 10px;" />
+                                                </td>
+                                                <td>@pelada.peladasName</td>
+                                                <td>@pelada.PrecioPelada.ToString("N2")</td>
+                                                <td>
+                                                    <div>
+                                                        <a href="/EditPelada/@pelada.peladasId" class="btn btn-outline-primary"><i class="bi bi-pencil-square" /> Edit</a>
+                                                        <a href="/ViewCompra/@pelada.peladasId" class="btn btn-outline-primary"><i class="bi bi-eyes" /> View</a>
+                                                        <a href="/DeleteCompra/@pelada.peladasId" class="btn btn-outline-danger"><i class="bi bi-trash-fill" /> Eliminar</a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        }
+                                        
+                                    }
+                                </tbody>
+
+                            </table>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+@code {
+    public IEnumerable<Peladas> peladas = new List<Peladas>();
+    public string mensaje;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (peladas == null || !peladas.Any())
+            mensaje = "No hay datos";
+
+        peladas = await peladasServices.GetPeladas();
+    }
+}

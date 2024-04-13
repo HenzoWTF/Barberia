@@ -30,7 +30,6 @@ namespace Barberia.Services
             context.Barbero.Add(Barbero);
             await context.SaveChangesAsync();
             return Barbero;
-
         }
         public async Task<IActionResult> PutBarbero(int id, Barbero Barbero)
         {

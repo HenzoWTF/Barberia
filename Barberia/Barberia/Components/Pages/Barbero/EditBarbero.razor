@@ -1,0 +1,117 @@
+﻿@page "/EditBarbero/{Id:int}"
+
+@rendermode InteractiveServer
+@inject NotificationService notificationServices
+@inject BarberoServices barberosServices
+@inject NavigationManager navigationManager
+@inject IJSRuntime JSRuntime
+
+
+<PageTitle>Barbero</PageTitle>
+<RadzenNotification />
+
+<EditForm Model="@barbero" OnValidSubmit="Guardar" FormName="barbero">
+    <DataAnnotationsValidator />
+
+    <a href="/" class="w-20 btn btn-lg btn-outline-primary"><i class="bi bi-arrow-left"></i></a>
+    <section class="vh-100 gradient-custom">
+        <div class="container py-5 h-100">
+            <div class="row d-flex justify-content-center">
+                <div class="fondo col-lg-6 col-xl-6 " style="border-radius: 2rem;">
+
+                    <div class="card-body p-5">
+                        <h2 class="fw-bold mb-2 text-uppercase text-center">Crear barberos</h2>
+
+                        <div class="row tab-content">
+                            <div class="mb-4">
+                                <div>
+                                    <h4 class="fw-bold mb-2 ">Nombre barbero:</h4>
+                                    <div class="input-group">
+                                        <InputText id="nombre" class="form-control" @bind-Value="barbero.BarberoName"></InputText>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h4 class="fw-bold mb-2 ">Celular barbero:</h4>
+                                    <div class="input-group">
+                                        <InputText id="cantidad" class="form-control" @bind-Value="barbero.Celular" placeholder="829-000-0098"></InputText>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h4 class="fw-bold mb-2 ">Direcci&oacute;n</h4>
+                                    <div class="input-group">
+                                        <InputText id="cantidad" class="form-control" @bind-Value="barbero.Direccion" placeholder="C/ Libertad #4A"></InputText>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="d-flex justify-content-center mt-3">
+                                <button type="submit" class="w-20 btn btn-lg btn-success"><i class="bi bi-floppy"></i> Agregar</button>
+                                <a href="/" class="w-20 btn btn-lg btn-danger ms-3"><i class="bi bi-arrow-left"></i> Cancelar</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</EditForm>
+
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+    public Barbero barbero = new Barbero();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (Id > 0)
+        {
+            barbero = await barberosServices.GetBarbero(Id);
+        }
+    }
+
+    public async Task Guardar()
+    {
+
+        if (string.IsNullOrEmpty(barbero.BarberoName))
+        {
+            var Mensaje = new NotificationMessage
+                {
+                    Severity = NotificationSeverity.Error,
+                    Summary = "Error al guardar",
+                    Detail = "debe de llenar todos los campos",
+                    Duration = 1_000
+                };
+            notificationServices.Notify(Mensaje);
+            return;
+        }
+        var response = await barberosServices.PutBarbero(Id, barbero);
+        if (response != null)
+        {
+            var Mensaje1 = new NotificationMessage
+                {
+                    Severity = NotificationSeverity.Success,
+                    Summary = "Guardado",
+                    Detail = "Contacto guardado con exito",
+                    Duration = 1000
+                };
+            notificationServices.Notify(Mensaje1);
+            await Task.Delay(1000);
+            navigationManager.NavigateTo("/IndexPelada");
+        }
+        else
+        {
+            var Mensaje1 = new NotificationMessage
+                {
+                    Severity = NotificationSeverity.Error,
+                    Summary = "Error al guardar",
+                    Detail = "Ha ocurrido un error",
+                    Duration = 1_000
+                };
+            notificationServices.Notify(Mensaje1);
+        }
+
+    }
+}

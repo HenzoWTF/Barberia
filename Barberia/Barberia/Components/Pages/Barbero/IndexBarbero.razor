@@ -1,12 +1,12 @@
-﻿@page "/IndexPelada"
+﻿@page "/IndexBarbero"
 @inject NotificationService notificationServices
-@inject PeladasServices peladasServices
+@inject BarberoServices BarberoServices
 @inject NavigationManager navigationManager
 
 @rendermode InteractiveServer
 
 
-<PageTitle>Peladas</PageTitle>
+<PageTitle>Barberos</PageTitle>
 <RadzenNotification />
 
 <a href="/" class="w-20 btn btn-lg btn-outline-primary"><i class="bi bi-arrow-left"></i></a>
@@ -20,9 +20,9 @@
 
                     <div class="tab-content">
                         <form>
-@* 
+                            @*
                             <div>
-                                <button type="submit" class="w-20 btn btn-lg btn-success"><i class="bi bi-floppy"></i> Aceptar</button>
+                            <button type="submit" class="w-20 btn btn-lg btn-success"><i class="bi bi-floppy"></i> Aceptar</button>
                             </div> *@
 
                             <table class="table">
@@ -30,13 +30,14 @@
                                     <tr>
                                         <th></th>
                                         <th>Nombre</th>
-                                        <th>Precio</th>
+                                        <th>Celular</th>
+                                        <th>Direcci&oacute;n</th>
                                         <th>Acciones</th>
                                     </tr>
                                 </thead>
 
                                 <tbody>
-                                    @if (!peladas.Any())
+                                    @if (!barbero.Any())
                                     {
                                         <tr>
                                             <td colspan="3" class="text-center">@mensaje</td>
@@ -44,27 +45,27 @@
                                     }
                                     else
                                     {
-                                        @foreach (var pelada in peladas)
+                                        @foreach (var barbero in barbero)
                                         {
                                             <tr>
                                                 <td>
-                                                    <img src="/Imagenes/Pelada1.png" style="width: 50px; height: auto; margin-right: 10px;" />
+                                                    <img src="/Imagenes/Empleado.png" style="width: 50px; height: auto; margin-right: 10px;" />
                                                 </td>
-                                                <td>@pelada.peladasName</td>
-                                                <td>@pelada.PrecioPelada.ToString("N2")</td>
+                                                <td>@barbero.BarberoName</td>
+                                                <td>@barbero.Celular</td>
+                                                <td>@barbero.Direccion</td>
                                                 <td>
                                                     <div>
-                                                        <a href="/EditPelada/@pelada.peladasId" class="btn btn-outline-primary"><i class="bi bi-pencil-square" /> Edit</a>
+                                                        <a href="/EditPelada/@barbero.BarberoId" class="btn btn-outline-primary"><i class="bi bi-pencil-square" /> Edit</a>
+                                                        <a href="/ViewCompra/@barbero.BarberoId" class="btn btn-outline-primary"><i class="bi bi-eyes" /> View</a>
+                                                        <a href="/DeleteCompra/@barbero.BarberoId" class="btn btn-outline-danger"><i class="bi bi-trash-fill" /> Eliminar</a>
                                                     </div>
                                                 </td>
                                             </tr>
                                         }
-                                        
                                     }
                                 </tbody>
-
                             </table>
-
                         </form>
                     </div>
                 </div>
@@ -75,14 +76,14 @@
 
 
 @code {
-    public IEnumerable<Peladas> peladas = new List<Peladas>();
+    public IEnumerable<Barbero> barbero = new List<Barbero>();
     public string mensaje;
 
     protected override async Task OnInitializedAsync()
     {
-        if (peladas == null || !peladas.Any())
+        if (barbero == null || !barbero.Any())
             mensaje = "No hay datos";
 
-        peladas = await peladasServices.GetPeladas();
+        barbero = await BarberoServices.GetBarberos();
     }
 }

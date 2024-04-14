@@ -13,7 +13,7 @@
 <EditForm Model="@barbero" OnValidSubmit="Guardar" FormName="barbero">
     <DataAnnotationsValidator />
 
-    <a href="/" class="w-20 btn btn-lg btn-outline-primary"><i class="bi bi-arrow-left"></i></a>
+    <a href="/IndexBarbero" class="w-20 btn btn-lg btn-outline-primary"><i class="bi bi-arrow-left"></i></a>
     <section class="vh-100 gradient-custom">
         <div class="container py-5 h-100">
             <div class="row d-flex justify-content-center">
@@ -99,7 +99,7 @@
                 };
             notificationServices.Notify(Mensaje1);
             await Task.Delay(1000);
-            navigationManager.NavigateTo("/IndexPelada");
+            navigationManager.NavigateTo("/IndexBarbero");
         }
         else
         {

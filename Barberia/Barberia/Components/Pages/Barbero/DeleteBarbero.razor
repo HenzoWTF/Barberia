@@ -1,0 +1,79 @@
+﻿@page "/DeleteBarbero/{Id:int}"
+
+@rendermode InteractiveServer
+@inject NotificationService notificationServices
+@inject BarberoServices barberosServices
+@inject NavigationManager navigationManager
+@inject IJSRuntime JSRuntime
+
+<a href="/IndexBarbero" class="w-20 btn btn-lg btn-outline-primary"><i class="bi bi-arrow-left"></i></a>
+<section class="vh-100 gradient-custom">
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center">
+            <div class="fondo col-lg-6 col-xl-6 " style="border-radius: 2rem;">
+
+                <div class="card-body p-5">
+                    <h2 class="fw-bold mb-2 text-uppercase text-center">Eliminar barberos</h2>
+
+                    <div class="row tab-content ">
+
+                        <li><strong>Nombre:</strong> @barbero.BarberoName</li>
+                        <li><strong>Celular:</strong> @barbero.Celular</li>
+                        <li><strong>Direcci&oacute;n:</strong> @barbero.Direccion</li>
+                    </div>
+
+                    <div class="d-flex justify-content-center mt-3">
+                        <td>
+                            <div>
+                                <a @onclick="() => ConfirmarEliminar(barbero.BarberoId)" class="btn btn-outline-danger"><i class="bi bi-trash-fill" /> Eliminar</a>
+                            </div>
+                        </td>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+    public Barbero barbero = new Barbero();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (Id > 0)
+        {
+            barbero = await barberosServices.GetBarbero(Id);
+        }
+    }
+
+    private async Task Eliminar(int id)
+    {
+        await barberosServices.DeleteBarberos(id);
+        var Mensaje = new NotificationMessage
+            {
+                Severity = NotificationSeverity.Success,
+                Summary = "Eliminación exitosa",
+                Detail = "Se ha eliminado el barbero",
+                Duration = 1000
+            };
+        notificationServices.Notify(Mensaje);
+        await Task.Delay(1000);
+        navigationManager.NavigateTo("/IndexBarbero");
+    }
+
+    private async Task ConfirmarEliminar(int id)
+    {
+        bool confirmacion = await JSRuntime.InvokeAsync<bool>("confirmar", "¿Está seguro de que desea eliminar este barbero?");
+        if (confirmacion)
+        {
+            await Eliminar(id);
+        }
+    }
+
+}

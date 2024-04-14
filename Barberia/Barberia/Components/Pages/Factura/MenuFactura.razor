@@ -1,0 +1,39 @@
+﻿@page "/MenuFactura"
+@inject NavigationManager NavigationManager
+@rendermode InteractiveServer
+@inject PeladasServices peladasServices
+
+<h1 class="fw-bold mb-2 text-uppercase text-center">Barberia X</h1>
+
+<div class="row">
+    <section class="gradient-custom">
+        <div class="container py-5 h-100">
+            <div class="row d-flex">
+                @foreach (var pelada in Peladas)
+                {
+                    <button class="fondo col-md-4 btn btn-primary rounded" style="border-radius: 1rem; color: black;" @onclick="() => NavigateToPelada(pelada.peladasId)">
+                        <div class="card-body p-5">
+                            <h3 class="fw-bold text-uppercase">@pelada.peladasName</h3>
+                        </div>
+                    </button>
+                }
+            </div>
+        </div>
+    </section>
+</div>
+
+
+@code {
+    List<Peladas> Peladas = new List<Peladas>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Peladas = await peladasServices.GetPeladas();
+
+    }
+
+    private void NavigateToPelada(int peladaId)
+    {
+        NavigationManager.NavigateTo($"/FacturaPelada/{peladaId}");
+    }
+}

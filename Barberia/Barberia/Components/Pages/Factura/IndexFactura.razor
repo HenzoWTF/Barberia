@@ -1,12 +1,12 @@
-﻿@page "/IndexBarbero"
+﻿@page "/IndexFactura"
 @inject NotificationService notificationServices
-@inject BarberoServices BarberoServices
+@inject FacturaServices FacturaServices
 @inject NavigationManager navigationManager
 
 @rendermode InteractiveServer
 
 
-<PageTitle>Barbero</PageTitle>
+<PageTitle>factura</PageTitle>
 <RadzenNotification />
 
 <a href="/" class="w-20 btn btn-lg btn-outline-secondary"><i class="bi bi-arrow-left"></i></a>
@@ -16,7 +16,7 @@
             <div class="fondo " style="border-radius: 1rem;">
 
                 <div class="card-body p-5 text-center">
-                    <h1 class="fw-bold mb-2 text-uppercase">Barberos</h1>
+                    <h1 class="fw-bold mb-2 text-uppercase">Facturas</h1>
 
                     <div class="tab-content">
                         <form>
@@ -29,15 +29,17 @@
                                 <thead>
                                     <tr>
                                         <th></th>
-                                        <th>Nombre</th>
-                                        <th>Celular</th>
-                                        <th>Direcci&oacute;n</th>
+                                        <th>Barbero</th>
+                                        <th>Fecha</th>
+                                        <th>Cliente</th>
+                                        <th>Forma de pago</th>
+                                        <th>Monto pagado</th>
                                         <th>Acciones</th>
                                     </tr>
                                 </thead>
 
                                 <tbody>
-                                    @if (!barbero.Any())
+                                    @if (!factura.Any())
                                     {
                                         <tr>
                                             <td colspan="3" class="text-center">@mensaje</td>
@@ -45,19 +47,23 @@
                                     }
                                     else
                                     {
-                                        @foreach (var barbero in barbero)
+                                        @foreach (var factura in factura)
                                         {
                                             <tr>
                                                 <td>
-                                                    <img src="/Imagenes/Empleado.png" style="width: 50px; height: auto; margin-right: 10px;" />
+                                                    <button @onclick="VerFactura" class="btn btn-link p-0">
+                                                        <img src="/Imagenes/Factura.png" style="width: 50px; height: auto; margin-right: 10px;" />
+                                                    </button>
                                                 </td>
-                                                <td>@barbero.BarberoName</td>
-                                                <td>@barbero.Celular</td>
-                                                <td>@barbero.Direccion</td>
+                                                <td>@factura.BarberoName</td>
+                                                <td>@factura.Fecha</td>
+                                                <td>@factura.Name</td>
+                                                <td>@factura.FormaDePago</td>
+                                                <td>@factura.Pagado.ToString("N2")</td>
                                                 <td>
                                                     <div>
-                                                        <a href="/EditBarbero/@barbero.BarberoId" class="btn btn-outline-primary"><i class="bi bi-pencil-square" /> Edit</a>
-                                                        <a href="/DeleteBarbero/@barbero.BarberoId" class="btn btn-outline-danger"><i class="bi bi-trash-fill" /> Eliminar</a>
+                                                        <a href="/EditBarbero/@factura.FacturaId" class="btn btn-outline-primary"><i class="bi bi-pencil-square" /> Edit</a>
+                                                        <a href="/DeleteBarbero/@factura.FacturaId" class="btn btn-outline-danger"><i class="bi bi-trash-fill" /> Eliminar</a>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -75,14 +81,18 @@
 
 
 @code {
-    public IEnumerable<Barbero> barbero = new List<Barbero>();
+    public IEnumerable<Factura> factura = new List<Factura>();
     public string mensaje;
 
     protected override async Task OnInitializedAsync()
     {
-        if (barbero == null || !barbero.Any())
+        if (factura == null || !factura.Any())
             mensaje = "No hay datos";
 
-        barbero = await BarberoServices.GetBarberos();
+        factura = await FacturaServices.GetFacturas();
+    }
+    private void VerFactura()
+    {
+        navigationManager.NavigateTo("/IndexPelada");
     }
 }

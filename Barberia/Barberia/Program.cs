@@ -3,6 +3,7 @@ using Barberia.Components;
 using Barberia.Components.Account;
 using Barberia.Data;
 using Barberia.Services;
+using Blazored.Modal;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -36,6 +37,7 @@ builder.Services.AddScoped<NotificationService>();
 builder.Services.AddScoped<BarberoServices>();
 builder.Services.AddScoped<FacturaServices>();
 builder.Services.AddScoped<PeladasServices>();
+builder.Services.AddBlazoredModal();
 
 
 builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)

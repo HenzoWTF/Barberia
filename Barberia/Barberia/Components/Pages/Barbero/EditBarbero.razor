@@ -13,14 +13,14 @@
 <EditForm Model="@barbero" OnValidSubmit="Guardar" FormName="barbero">
     <DataAnnotationsValidator />
 
-    <a href="/IndexBarbero" class="w-20 btn btn-lg btn-outline-primary"><i class="bi bi-arrow-left"></i></a>
+    <a href="/IndexBarbero" class="w-20 btn btn-lg btn-outline-secondary"><i class="bi bi-arrow-left"></i></a>
     <section class="vh-100 gradient-custom">
         <div class="container py-5 h-100">
             <div class="row d-flex justify-content-center">
                 <div class="fondo col-lg-6 col-xl-6 " style="border-radius: 2rem;">
 
                     <div class="card-body p-5">
-                        <h2 class="fw-bold mb-2 text-uppercase text-center">Crear barberos</h2>
+                        <h2 class="fw-bold mb-2 text-uppercase text-center">Editar barberos</h2>
 
                         <div class="row tab-content">
                             <div class="mb-4">
@@ -46,7 +46,7 @@
 
                             <div class="d-flex justify-content-center mt-3">
                                 <button type="submit" class="w-20 btn btn-lg btn-success"><i class="bi bi-floppy"></i> Agregar</button>
-                                <a href="/" class="w-20 btn btn-lg btn-danger ms-3"><i class="bi bi-arrow-left"></i> Cancelar</a>
+                                <a href="/" class="w-20 btn btn-lg btn-primary ms-3"><i class="bi bi-arrow-left"></i> Cancelar</a>
                             </div>
                         </div>
                     </div>
@@ -54,7 +54,6 @@
             </div>
         </div>
     </section>
-
 </EditForm>
 
 
@@ -112,6 +111,5 @@
                 };
             notificationServices.Notify(Mensaje1);
         }
-
     }
 }

@@ -1,0 +1,79 @@
+﻿@page "/ViewFactura/{Id:int}"
+
+@rendermode InteractiveServer
+@inject NotificationService notificationServices
+@inject FacturaServices facturaServices
+@inject PeladasServices peladasServices
+@inject BarberoServices barberosServices
+@inject NavigationManager navigationManager
+@inject IJSRuntime JSRuntime
+
+<section class="gradient-custom">
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center">
+            <div class="fondo" style="border-radius: 2rem;">
+
+                <div class="card-body">
+                    <div>
+                        <div class="mb-1">
+                            <div>
+                                <div>
+                                    <div class="text-center">
+                                        <h2 class="fw-bold text-uppercase text-center">Barberia X</h2>
+                                        <p>Direcci&oacute;n: C/ Libertad # 20</p>
+                                        <p>San Fco. de Macor&iacute;s</p>
+                                        <p>829-000-0098</p>
+                                        <p>--------------------------------------------------------------------------------</p>
+                                    </div>
+
+                                    <ul class="list-unstyled" style="margin-top: 20px; margin-bottom: 20px;">
+                                        <li><strong>Fecha:</strong> @factura.Fecha.ToShortDateString()</li>
+                                        <li><strong>Nombre:</strong> @factura.Name</li>
+                                        @if (peladas != null)
+                                        {
+                                            <li><strong>Cédula:</strong> @peladas.FirstOrDefault()?.peladasName</li>
+                                        }
+                                        @if (Barberos != null)
+                                        {
+                                            @foreach (var barbero in Barberos)
+                                            {
+                                                <li><strong>Correo Electrónico:</strong> @barbero.Celular</li>
+                                            }
+                                        }
+                                        <li><strong>Teléfono:</strong> @factura.FormaDePago</li>
+                                        <div class="justify-content-end">
+                                        <li><strong>Total:</strong> @factura.Total</li>
+                                </div>
+                                </ul>
+                                <div class="text-center">
+                                    <p>-------------------------------------------------------</p>
+                                    <h3 class="fw-bold mb-2 text-uppercase text-center">Gracias por preferirnos</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</section>
+
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+    public Factura factura = new Factura();
+    public string Cliente = " ";
+    public int Barbero { get; set; }
+    public IEnumerable<Barbero> Barberos;
+    public IEnumerable<Peladas> peladas;
+    public bool Confirmacion = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        factura = await facturaServices.GetFactura(Id);
+        peladas = await peladasServices.GetPeladas();
+        Barberos = await barberosServices.GetBarberos();
+    }
+}

@@ -1,0 +1,137 @@
+﻿@page "/VistaFactura/{Id:int}"
+
+@rendermode InteractiveServer
+@inject NotificationService notificationServices
+@inject FacturaServices facturaServices
+@inject PeladasServices peladasServices
+@inject BarberoServices barberosServices
+@inject NavigationManager navigationManager
+@inject IJSRuntime JSRuntime
+
+<section class="gradient-custom">
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center">
+            <div class="fondo" style="border-radius: 2rem;">
+
+                <div class="card-body">
+                    <div>
+                        <div class="mb-1">
+                            <div>
+                                <div>
+                                    <div class="text-center">
+                                        <h2 class="fw-bold text-uppercase text-center">Barberia X</h2>
+                                        <p>Direcci&oacute;n: C/ Libertad # 20</p>
+                                        <p>San Fco. de Macor&iacute;s</p>
+                                        <p>829-000-0098</p>
+                                        <p>--------------------------------------------------------------------------------</p>
+                                    </div>
+
+                                    <ul class="list-unstyled" style="margin-top: 20px; margin-bottom: 20px;">
+                                        <li><strong>Fecha:</strong> @factura.Fecha.ToShortDateString()</li>
+                                        <li><strong>Nombre:</strong> @factura.Name</li>
+                                        @if (peladas != null)
+                                        {
+                                            <li><strong>Cédula:</strong> @peladas.FirstOrDefault()?.peladasName</li>
+                                        }
+                                        @if (Barberos != null)
+                                        {
+                                            @foreach (var barbero in Barberos)
+                                            {
+                                                <li><strong>Correo Electrónico:</strong> @barbero.Celular</li>
+                                            }
+                                        }
+                                        <li><strong>Teléfono:</strong> @factura.FormaDePago</li>
+                                        <div class="justify-content-end">
+                                        <li><strong>Total:</strong> @factura.Total</li>
+                                </div>
+                                </ul>
+                                <div class="text-center">
+                                    <p>-------------------------------------------------------</p>
+                                    <h3 class="fw-bold mb-2 text-uppercase text-center">Gracias por preferirnos</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-center mt-3">
+                        <a href="/" class="w-20 btn btn-lg btn-success ms-3"><i class="bi bi-arrow-left"></i> Pagar</a>
+                        <td>
+                            <div>
+                                <button @onclick="() => ConfirmarEliminar(factura.FacturaId)" class="btn btn-outline-danger"><i class="bi bi-trash-fill" /> Eliminar</button>
+                            </div>
+                        </td>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</section>
+
+
+@if (Confirmacion)
+{
+    <div class="modal fade show" id="confirmarModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="display: block;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Confirmar eliminación</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @onclick=Close></button>
+                </div>
+                <div class="modal-body">
+                    ¿Está seguro de que desea eliminar este barbero?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" @onclick=Close>Cancelar</button>
+                    <button type="button" class="btn btn-danger" @onclick=@(async () => await Eliminar(Id))>Eliminar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+    public Factura factura = new Factura();
+    public string Cliente = " ";
+    public int Barbero { get; set; }
+    public IEnumerable<Barbero> Barberos;
+    public IEnumerable<Peladas> peladas;
+    public bool Confirmacion = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        factura = await facturaServices.GetFactura(Id);
+        peladas = await peladasServices.GetPeladas();
+        Barberos = await barberosServices.GetBarberos();
+    }
+
+
+    private void Close()
+    {
+        Confirmacion = false;
+    }
+
+    private async Task Eliminar(int id)
+    {
+        await facturaServices.DeleteFacturas(id);
+        var Mensaje = new NotificationMessage
+            {
+                Severity = NotificationSeverity.Success,
+                Summary = "Eliminación exitosa",
+                Detail = "Se ha eliminado el barbero",
+                Duration = 1000
+            };
+        notificationServices.Notify(Mensaje);
+        await Task.Delay(1000);
+        navigationManager.NavigateTo("/IndexBarbero");
+    }
+
+    private async Task ConfirmarEliminar(int id)
+    {
+        Confirmacion = true;
+    }
+
+}

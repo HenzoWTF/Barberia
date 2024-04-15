@@ -1,0 +1,129 @@
+﻿@page "/CreateFactura/{Id:int}"
+
+@rendermode InteractiveServer
+@inject NotificationService notificationServices
+@inject FacturaServices facturaServices
+@inject PeladasServices peladasServices
+@inject BarberoServices barberosServices
+@inject NavigationManager navigationManager
+@inject IJSRuntime JSRuntime
+
+<EditForm Model="@factura" OnValidSubmit="Guardar" FormName="factura">
+    <DataAnnotationsValidator />
+
+    <section class="vh-100 gradient-custom">
+        <div class="container py-5 h-100">
+            <div class="row d-flex justify-content-center">
+                <div class="fondo col-lg-6 col-xl-6 " style="border-radius: 2rem;">
+
+                    <div class="card-body p-5">
+                        <h2 class="fw-bold mb-2 text-uppercase text-center">Editar barberos</h2>
+
+                        <div class="row tab-content">
+                            <div class="mb-4">
+                                <div>
+                                    <div>
+                                        <label>Barbero</label>
+                                        <InputSelect id="NombreC" class="form-select" @bind-Value="Barbero">
+                                            <option value="">Seleccionar Barbero</option>
+                                            @foreach (var item in Barberos)
+                                            {
+                                                <option value="@item.BarberoName">@item.BarberoName</option>
+                                            }
+                                        </InputSelect>
+                                    </div>
+
+                                    <div>
+                                        <h4 class="fw-bold mb-2 ">Nombre del cliente</h4>
+                                        <div class="input-group">
+                                            <InputText id="cantidad" class="form-control" @bind-Value="factura.Name" placeholder="Anderson"></InputText>
+                                        </div>
+                                    </div>
+
+
+                                    <div>
+                                        <h4 class="fw-bold mb-2 ">Forma de pago</h4>
+                                        <div class="input-group">
+                                            <InputText id="FormaP" class="form-control" @bind-Value="factura.FormaDePago"></InputText>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="d-flex justify-content-center mt-3">
+                                <button type="submit" class="w-20 btn btn-lg btn-success"><i class="bi bi-floppy"></i> Agregar</button>
+                                <a href="/" class="w-20 btn btn-lg btn-primary ms-3"><i class="bi bi-arrow-left"></i> Cancelar</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</EditForm>
+
+
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+    public Factura factura = new Factura();
+    public Peladas peladas = new Peladas();
+    public string Cliente = " ";
+    public string Barbero { get; set; }
+    public IEnumerable<Barbero> Barberos = new List<Barbero>();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        peladas = await peladasServices.GetPelada(Id);
+        Barberos = await barberosServices.GetBarberos();
+        factura.FormaDePago = "Efectivo";
+        factura.Fecha = DateTime.Now;
+        factura.Total = peladas.PrecioPelada;        
+    }
+
+    public async Task Guardar()
+    {
+
+        if (string.IsNullOrEmpty(factura.BarberoName) && string.IsNullOrEmpty(factura.Name))
+        {
+            var Mensaje = new NotificationMessage
+                {
+                    Severity = NotificationSeverity.Error,
+                    Summary = "Error al guardar",
+                    Detail = "debe de llenar todos los campos",
+                    Duration = 1_000
+                };
+            notificationServices.Notify(Mensaje);
+            return;
+        }
+        factura.BarberoName = Barbero;
+        var response = await facturaServices.PostFacturas(factura);
+        if (response != null)
+        {
+            var Mensaje1 = new NotificationMessage
+                {
+                    Severity = NotificationSeverity.Success,
+                    Summary = "Guardado",
+                    Detail = "Factura guardada con exito",
+                    Duration = 1000
+                };
+            notificationServices.Notify(Mensaje1);
+            await Task.Delay(1000);
+            navigationManager.NavigateTo($"/VistaFactura/{response.FacturaId}");
+        }
+        else
+        {
+            var Mensaje1 = new NotificationMessage
+                {
+                    Severity = NotificationSeverity.Error,
+                    Summary = "Error al guardar",
+                    Detail = "Ha ocurrido un error",
+                    Duration = 1_000
+                };
+            notificationServices.Notify(Mensaje1);
+        }
+    }
+}

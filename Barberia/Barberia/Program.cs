@@ -37,6 +37,7 @@ builder.Services.AddScoped<NotificationService>();
 builder.Services.AddScoped<BarberoServices>();
 builder.Services.AddScoped<FacturaServices>();
 builder.Services.AddScoped<PeladasServices>();
+builder.Services.AddScoped<CobrarServices>();
 builder.Services.AddBlazoredModal();
 
 

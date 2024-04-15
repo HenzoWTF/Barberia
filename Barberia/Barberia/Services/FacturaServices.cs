@@ -18,8 +18,6 @@ public class FacturaServices(ApplicationDbContext context)
             FormaDePago = d.FormaDePago,
             BarberoName = d.BarberoName,
             Total = d.Total,
-            devuelta = d.devuelta,
-            Pagado = d.Pagado,
             Fecha = d.Fecha
         }).ToListAsync();
     }
@@ -78,5 +76,11 @@ public class FacturaServices(ApplicationDbContext context)
     public bool FacturasExists(int id)
     {
         return context.Facturas.Any(e => e.FacturaId == id);
+    }
+    public async Task<IEnumerable<Factura>> GetFacturasPorBarbero(string NombreBarbero)
+    {
+        return await context.Facturas
+            .Where(f => f.BarberoName == NombreBarbero && !f.Cobrada)
+            .ToListAsync();
     }
 }

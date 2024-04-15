@@ -5,6 +5,7 @@
 @inject PeladasServices peladasServices
 @inject NavigationManager navigationManager
 @inject IJSRuntime JSRuntime
+@attribute [Authorize(Roles = "Admin")]
 
 
 <PageTitle>Peladas</PageTitle>

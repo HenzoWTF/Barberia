@@ -2,6 +2,7 @@
 @inject NavigationManager NavigationManager
 @rendermode InteractiveServer
 @inject PeladasServices peladasServices
+@attribute [Authorize(Roles = "Admin")]
 
 <a href="/" class="w-20 btn btn-lg btn-outline-secondary"><i class="bi bi-arrow-left"></i></a>
 

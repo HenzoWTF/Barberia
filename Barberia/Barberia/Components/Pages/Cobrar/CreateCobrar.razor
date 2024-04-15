@@ -4,6 +4,7 @@
 @inject BarberoServices barberosServices
 @inject CobrarServices cobrarServices
 @inject NavigationManager navigationManager
+@attribute [Authorize(Roles = "Admin")]
 
 @rendermode InteractiveServer
 

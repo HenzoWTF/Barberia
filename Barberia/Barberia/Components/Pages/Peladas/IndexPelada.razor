@@ -2,6 +2,7 @@
 @inject NotificationService notificationServices
 @inject PeladasServices peladasServices
 @inject NavigationManager navigationManager
+@attribute [Authorize(Roles = "Admin")]
 
 @rendermode InteractiveServer
 

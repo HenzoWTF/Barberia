@@ -2,6 +2,7 @@
 @inject NotificationService notificationServices
 @inject BarberoServices BarberoServices
 @inject NavigationManager navigationManager
+@attribute [Authorize(Roles = "Admin")]
 
 @rendermode InteractiveServer
 

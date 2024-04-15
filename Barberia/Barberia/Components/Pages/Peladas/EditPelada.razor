@@ -4,6 +4,7 @@
 @inject NotificationService notificationServices
 @inject PeladasServices peladasServices
 @inject NavigationManager navigationManager
+@attribute [Authorize(Roles = "Admin")]
 
 
 <PageTitle>Peladas</PageTitle>

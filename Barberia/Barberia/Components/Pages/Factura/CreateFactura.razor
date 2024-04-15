@@ -7,6 +7,7 @@
 @inject BarberoServices barberosServices
 @inject NavigationManager navigationManager
 @inject IJSRuntime JSRuntime
+@attribute [Authorize(Roles = "Admin")]
 
 <RadzenNotification />
 <EditForm Model="@factura" OnValidSubmit="Guardar" FormName="factura">

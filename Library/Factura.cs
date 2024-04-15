@@ -17,8 +17,5 @@ public class Factura
     public string Name { get; set; }
     public string FormaDePago { get; set; }
     public float Total { get; set; }
-    public float Pagado { get; set; }
-    public float devuelta { get; set; }
-
-
+    public bool Cobrada { get; set; }
 }

@@ -19,4 +19,7 @@ public class Barbero
 
     [ForeignKey("BarberoId")]
     public List<Factura> Facturas { get; set; } = new List<Factura>();
+
+    [ForeignKey("BarberoId")]
+    public List<Cobrar> Cobrar { get; set; } = new List<Cobrar>();
 }

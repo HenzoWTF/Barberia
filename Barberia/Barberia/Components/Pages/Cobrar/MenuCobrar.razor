@@ -1,0 +1,84 @@
+﻿@page "/MenuCobrar"
+@inject NotificationService notificationServices
+@inject BarberoServices BarberoServices
+@inject FacturaServices facturaServices
+@inject NavigationManager navigationManager
+
+@rendermode InteractiveServer
+
+
+<PageTitle>Cobrar</PageTitle>
+<RadzenNotification />
+
+<a href="/" class="w-20 btn btn-lg btn-outline-secondary"><i class="bi bi-arrow-left"></i></a>
+<section class=" gradient-custom">
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center">
+            <div class="fondo " style="border-radius: 1rem;">
+
+                <div class="card-body p-5 text-center">
+                    <h1 class="fw-bold mb-2 text-uppercase">Cobrar</h1>
+
+                    <div class="tab-content">
+                        <form>
+                            @*
+                            <div>
+                            <button type="submit" class="w-20 btn btn-lg btn-success"><i class="bi bi-floppy"></i> Aceptar</button>
+                            </div> *@
+
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Nombre</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    @if (!barbero.Any())
+                                    {
+                                        <tr>
+                                            <td colspan="3" class="text-center">@mensaje</td>
+                                        </tr>
+                                    }
+                                    else
+                                    {
+                                        @foreach (var barbero in barbero)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    <img src="/Imagenes/Empleado.png" style="width: 50px; height: auto; margin-right: 10px;" />
+                                                </td>
+                                                <td>@barbero.BarberoName</td>
+                                                <td>
+                                                    <div>
+                                                        <a href="/CreateCobrar/@barbero.BarberoId" class="btn btn-primary"><i class="bi bi-coin" /> Cobrar</a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+@code {
+    public IEnumerable<Barbero> barbero = new List<Barbero>();
+    public string mensaje;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (barbero == null || !barbero.Any())
+            mensaje = "No hay datos";
+
+        barbero = await BarberoServices.GetBarberos();
+    }
+}

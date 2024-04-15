@@ -1,0 +1,147 @@
+﻿@page "/CreateCobrar/{Id:int}"
+@inject NotificationService notificationServices
+@inject FacturaServices facturaServices
+@inject BarberoServices barberosServices
+@inject CobrarServices cobrarServices
+@inject NavigationManager navigationManager
+
+@rendermode InteractiveServer
+
+
+<PageTitle>Cobrar</PageTitle>
+<RadzenNotification />
+
+<a href="/" class="w-20 btn btn-lg btn-outline-secondary"><i class="bi bi-arrow-left"></i></a>
+<section class="gradient-custom">
+    <div class="container py-5">
+        <div class="row d-flex justify-content-center align-items-center">
+            <div class="fondo col-lg-3 col-xl-4" style="border-radius: 1rem;">
+                <div class="card-body p-5 text-center">
+                    <h1 class="fw-bold mb-2 text-uppercase">Cobrar</h1>
+                    <h4 class="fw-bold mb-2 text-uppercase">@barbero.BarberoName</h4>
+
+                    <div class="tab-content">
+                        <form>
+                            <div class="table-container" style="max-height: 400px; overflow-y: auto;">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>Nombre</th>
+                                            <th>Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if (!factura.Any())
+                                        {
+                                            <tr>
+                                                <td colspan="3" class="text-center">@mensaje</td>
+                                            </tr>
+                                        }
+                                        else
+                                        {
+                                            @foreach (var factura in @factura)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        <img src="/Imagenes/Factura.png" style="width: 25px; height: auto; margin-right: 10px;" />
+                                                    </td>
+                                                    <td>@factura.BarberoName</td>
+                                                    <td>@factura.Total</td>
+                                                </tr>
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="text-center">
+                                <h4 class="row fw-bold mb-2">Sumatoria del Total: @cobrar.Total</h4>
+                                <h4 class="row fw-bold mb-2">Descuento: @cobrar.Comision</h4>
+                                <h4 class="row fw-bold mb-2">Total a cobrar: @cobrar.MontoCobrar.ToString("N2")</h4>
+                                <button type="button" class="btn btn-primary" @onclick=@(async () => await Guardar())>Cobrar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+    public List<Factura> factura = new List<Factura>();
+    public Barbero barbero = new Barbero();
+    public Cobrar cobrar = new Cobrar();
+    public string mensaje;
+    public float Total;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (factura == null)
+            mensaje = "No hay datos";
+
+        barbero = await barberosServices.GetBarbero(Id);
+        factura = (await facturaServices.GetFacturasPorBarbero(barbero.BarberoName)).ToList();
+        cobrar.Total = factura.Sum(f => f.Total);
+        cobrar.Comision = 0.30f;
+        cobrar.MontoCobrar = cobrar.Total * cobrar.Comision;
+    }
+
+    public async Task Guardar()
+    {
+        cobrar.NombreBarbero = barbero.BarberoName;
+
+        // Verificar si hay facturas disponibles para cobrar
+        if (factura.Any())
+        {
+            // Realizar el cobro y marcar las facturas como cobradas
+            var response = await cobrarServices.PostCobrar(cobrar);
+            if (response != null)
+            {
+                foreach (var f in factura)
+                {
+                    f.Cobrada = true;
+                    await facturaServices.PutFactura(f.FacturaId, f);
+                }
+                var Mensaje1 = new NotificationMessage
+                    {
+                        Severity = NotificationSeverity.Success,
+                        Summary = "Guardado",
+                        Detail = "Factura guardada con exito",
+                        Duration = 1000
+                    };
+                notificationServices.Notify(Mensaje1);
+                await Task.Delay(1000);
+                navigationManager.NavigateTo("/");
+            }
+            else
+            {
+                var Mensaje1 = new NotificationMessage
+                    {
+                        Severity = NotificationSeverity.Error,
+                        Summary = "Error al guardar",
+                        Detail = "Ha ocurrido un error",
+                        Duration = 1_000
+                    };
+                notificationServices.Notify(Mensaje1);
+            }
+        }
+        else
+        {
+            // Mostrar un mensaje indicando que no hay facturas disponibles para cobrar
+            var MensajeNoFacturas = new NotificationMessage
+                {
+                    Severity = NotificationSeverity.Error,
+                    Summary = "Error",
+                    Detail = "No hay facturas disponibles para cobrar",
+                    Duration = 3000
+                };
+            notificationServices.Notify(MensajeNoFacturas);
+        }
+    }
+
+}

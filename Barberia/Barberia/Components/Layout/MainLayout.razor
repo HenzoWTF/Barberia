@@ -1,4 +1,8 @@
 ﻿@inherits LayoutComponentBase
+@implements IDisposable
+@inject NavigationManager NavigationManager
+
+<RadzenNotification />
 
 <div class="page">@* 
     <div class="sidebar">
@@ -6,9 +10,33 @@
     </div> *@
 
     <main>
-        <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
-        </div>
+        <AuthorizeView>
+            <Authorized>
+                <div class="top-row px-4">
+                    <div class="container-fluid d-flex align-items-center">
+                        <a href="/MenuFactura">
+                            <h5 class="fw-bold mb-2 text-uppercase text-center">Barberia X</h5>
+                        </a>
+                    </div>
+
+                    <div class="nav-item px-3">
+                        <NavLink class="nav-link" href="Account/Manage">
+                            <span class="bi bi-person-fill-nav-menu" aria-hidden="true"></span> @context.User.Identity?.Name
+                        </NavLink>
+                    </div>
+                    <div class="nav-item px-3">
+                        <form action="Account/Logout" method="post">
+                            <AntiforgeryToken />
+                            <input type="hidden" name="ReturnUrl" value="@currentUrl" />
+                            <button type="submit" class="nav-link">
+                                <span class="bi bi-arrow-bar-left-nav-menu" aria-hidden="true"></span> Logout
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+            </Authorized>
+        </AuthorizeView>
 
         <article class="content px-4">
             @Body
@@ -23,3 +51,35 @@
     <a href="" class="reload">Reload</a>
     <a class="dismiss">🗙</a>
 </div>
+
+@code {
+    private string? currentUrl;
+
+    protected override void OnInitialized()
+    {
+        currentUrl = NavigationManager.ToBaseRelativePath("https://localhost:7031/");
+        NavigationManager.LocationChanged += OnLocationChanged;
+    }
+
+    private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
+    {
+        // Verificar si la URL actual es la página de cerrar sesión
+        if (e.Location == "Account/Logout")
+        {
+            // Redireccionar a la página raíz
+            NavigationManager.NavigateTo("/");
+        }
+        else
+        {
+            // Redireccionar a la página raíz en cualquier otro caso
+            NavigationManager.NavigateTo("/");
+        }
+        StateHasChanged();
+    }
+
+
+    public void Dispose()
+    {
+        NavigationManager.LocationChanged -= OnLocationChanged;
+    }
+}

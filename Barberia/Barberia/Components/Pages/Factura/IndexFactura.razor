@@ -51,9 +51,7 @@
                                         {
                                             <tr>
                                                 <td>
-                                                    <button @onclick="() => VerFactura(item.FacturaId)" class="btn btn-link p-0">
-                                                        <img src="/Imagenes/Factura.png" style="width: 50px; height: auto; margin-right: 10px;" />
-                                                    </button>
+                                                    <img src="/Imagenes/Factura.png" style="width: 50px; height: auto; margin-right: 10px;" />
                                                 </td>
                                                 <td>@item.BarberoName</td>
                                                 <td>@item.Fecha</td>
@@ -91,9 +89,5 @@
             mensaje = "No hay datos";
 
         factura = await FacturaServices.GetFacturas();
-    }
-    private void VerFactura(int id)
-    {
-        navigationManager.NavigateTo($"/ViewFactura/{id}");
     }
 }

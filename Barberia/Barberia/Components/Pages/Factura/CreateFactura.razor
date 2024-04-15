@@ -8,6 +8,7 @@
 @inject NavigationManager navigationManager
 @inject IJSRuntime JSRuntime
 
+<RadzenNotification />
 <EditForm Model="@factura" OnValidSubmit="Guardar" FormName="factura">
     <DataAnnotationsValidator />
 
@@ -44,7 +45,7 @@
                                     <div>
                                         <h4 class="fw-bold mb-2 ">Forma de pago</h4>
                                         <div class="input-group">
-                                            <InputText id="FormaP" class="form-control" @bind-Value="factura.FormaDePago"></InputText>
+                                            <InputText id="FormaP" class="form-control" @bind-Value="factura.FormaDePago" readonly></InputText>
                                         </div>
                                     </div>
 

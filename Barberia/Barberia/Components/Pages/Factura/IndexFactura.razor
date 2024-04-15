@@ -46,28 +46,28 @@
                                         </tr>
                                     }
                                     else
-                                    {
-                                        @foreach (var factura in factura)
+                                    {@foreach (var item in factura)
                                         {
                                             <tr>
                                                 <td>
-                                                    <button @onclick="VerFactura" class="btn btn-link p-0">
+                                                    <button @onclick="() => VerFactura(item.FacturaId)" class="btn btn-link p-0">
                                                         <img src="/Imagenes/Factura.png" style="width: 50px; height: auto; margin-right: 10px;" />
                                                     </button>
                                                 </td>
-                                                <td>@factura.BarberoName</td>
-                                                <td>@factura.Fecha</td>
-                                                <td>@factura.Name</td>
-                                                <td>@factura.FormaDePago</td>
-                                                <td>@factura.Total.ToString("N2")</td>
+                                                <td>@item.BarberoName</td>
+                                                <td>@item.Fecha</td>
+                                                <td>@item.Name</td>
+                                                <td>@item.FormaDePago</td>
+                                                <td>@item.Total.ToString("N2")</td>
                                                 <td>
                                                     <div>
-                                                        <a href="/EditBarbero/@factura.FacturaId" class="btn btn-outline-primary"><i class="bi bi-pencil-square" /> Edit</a>
-                                                        <a href="/DeleteBarbero/@factura.FacturaId" class="btn btn-outline-danger"><i class="bi bi-trash-fill" /> Eliminar</a>
+                                                        <a href="/EditBarbero/@item.FacturaId" class="btn btn-outline-primary"><i class="bi bi-pencil-square" /> Edit</a>
+                                                        <a href="/DeleteBarbero/@item.FacturaId" class="btn btn-outline-danger"><i class="bi bi-trash-fill" /> Eliminar</a>
                                                     </div>
                                                 </td>
                                             </tr>
                                         }
+
                                     }
                                 </tbody>
                             </table>
@@ -91,8 +91,8 @@
 
         factura = await FacturaServices.GetFacturas();
     }
-    private void VerFactura()
+    private void VerFactura(int id)
     {
-        navigationManager.NavigateTo("/IndexPelada");
+        navigationManager.NavigateTo($"/ViewFactura/{id}");
     }
 }

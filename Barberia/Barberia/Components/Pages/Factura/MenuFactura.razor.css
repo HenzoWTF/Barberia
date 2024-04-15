@@ -1,6 +1,6 @@
 ﻿.fondo {
-    background-color: #ffffff; /* Cambiar el fondo a blanco */
-    border: 1px solid rgba(0, 0, 0, 0.3); /* Añadir un borde sólido de 2px de color naranja */
+    background-color: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.3); 
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
 

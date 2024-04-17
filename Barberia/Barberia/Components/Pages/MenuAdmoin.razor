@@ -1,0 +1,54 @@
+﻿@page "/MenuAdmin"
+@inject NavigationManager NavigationManager
+@rendermode InteractiveServer
+<PageTitle>Menua admin</PageTitle>
+@attribute [Authorize(Roles = "Admin")]
+
+<div class="row vh-100 align-items-center justify-content-center">
+    <section class="gradient-custom">
+        <div class="container py-5 h-100">
+            <h1 class="fw-bold mb-5 text-uppercase text-center">Barberia X</h1>
+            <div class="row">
+                <button class="fondo col-md-6 btn btn-primary rounded mb-5" style="border-radius: 1rem; color: black;" @onclick="() => Barbero()">
+                    <div class="card-body p-5">
+                        <h3 class="fw-bold text-uppercase">Crear Usuario</h3>
+                    </div>
+                </button>
+                <button class="fondo col-md-6 btn btn-primary rounded mb-5 flex-md-row" style="border-radius: 1rem; color: black;" @onclick="() => EliminarBarbero()">
+                    <div class="card-body p-5">
+                        <h3 class="fw-bold text-uppercase">Barberos</h3>
+                    </div>
+                </button>
+                <button class="fondo col-md-6 btn btn-primary rounded mb-5" style="border-radius: 1rem; color: black;" @onclick="() => Factura()">
+                    <div class="card-body p-5">
+                        <h3 class="fw-bold text-uppercase">Ver Factura</h3>
+                    </div>
+                </button>
+                <button class="fondo col-md-6 btn btn-primary rounded mb-5" style="border-radius: 1rem; color: black;" @onclick="() => Cobrar()">
+                    <div class="card-body p-5">
+                        <h3 class="fw-bold text-uppercase">Cobrar</h3>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </section>
+</div>
+
+@code {
+    private void Barbero()
+    {
+        NavigationManager.NavigateTo("/CreateBarbero");
+    }
+    private void EliminarBarbero()
+    {
+        NavigationManager.NavigateTo("/IndexBarbero");
+    }
+    private void Factura()
+    {
+        NavigationManager.NavigateTo("/IndexFactura");
+    }
+    private void Cobrar()
+    {
+        NavigationManager.NavigateTo("/MenuCobrar");
+    }
+}

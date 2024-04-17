@@ -24,6 +24,17 @@
                             <span class="bi bi-person-fill-nav-menu" aria-hidden="true"></span> @context.User.Identity?.Name
                         </NavLink>
                     </div>
+
+                    <div class="nav-item px-3">
+                        <form action="@currentUrlAdmin" method="get">
+                            <AntiforgeryToken />
+                            <button type="submit" class="nav-link">
+                                <span class="bi bi-arrow-bar-left-nav-menu" aria-hidden="true"></span> Admin
+                            </button>
+                        </form>
+                    </div>
+
+
                     <div class="nav-item px-3">
                         <form action="Account/Logout" method="post">
                             <AntiforgeryToken />
@@ -54,9 +65,11 @@
 
 @code {
     private string? currentUrl;
+    private string? currentUrlAdmin;
 
     protected override void OnInitialized()
     {
+        currentUrlAdmin = NavigationManager.ToBaseRelativePath("https://localhost:7031/MenuAdmin");
         currentUrl = NavigationManager.ToBaseRelativePath("https://localhost:7031/");
         NavigationManager.LocationChanged += OnLocationChanged;
     }

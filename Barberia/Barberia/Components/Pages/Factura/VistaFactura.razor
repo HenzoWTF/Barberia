@@ -13,7 +13,7 @@
 <section class="gradient-custom">
     <div class="container py-5 h-100">
         <div class="row d-flex justify-content-center">
-            <div class="fondo" style="border-radius: 2rem;">
+            <div class="fondo  col-lg-3 col-xl-4" style="border-radius: 2rem;">
 
                 <div class="card-body">
                     <div>
@@ -25,15 +25,16 @@
                                         <p>Direcci&oacute;n: C/ Libertad # 20</p>
                                         <p>San Fco. de Macor&iacute;s</p>
                                         <p>829-000-0098</p>
-                                        <p>--------------------------------------------------------------------------------</p>
+                                        <p>----------------------------------------------------</p>
                                     </div>
 
                                     <ul class="list-unstyled" style="margin-top: 20px; margin-bottom: 20px;">
-                                        <li><strong>Fecha:</strong> @factura.Fecha.ToShortDateString()</li>
-                                        <li><strong>Nombre:</strong> @factura.Name</li>
+                                        <li><strong>Fecha:</strong> @factura.Fecha</li>
+                                        <li><strong>Barbero:</strong> @factura.BarberoName</li>
+                                        <li><strong>Nombre Cliente:</strong> @factura.Name</li>
                                         @if (peladas != null)
                                         {
-                                            <li><strong>Cédula:</strong> @peladas.FirstOrDefault()?.peladasName</li>
+                                            <li><strong>Tipo de pelada:</strong> @peladas.FirstOrDefault()?.peladasName</li>
                                         }
                                         @if (Barberos != null)
                                         {
@@ -48,7 +49,7 @@
                                 </div>
                                 </ul>
                                 <div class="text-center">
-                                    <p>-------------------------------------------------------</p>
+                                    <p>----------------------------------------------------</p>
                                     <h3 class="fw-bold mb-2 text-uppercase text-center">Gracias por preferirnos</h3>
                                 </div>
                             </div>

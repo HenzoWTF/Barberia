@@ -10,4 +10,6 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<Factura> Facturas { get; set; }
     public DbSet<Peladas> Peladas { get; set; }
     public DbSet<Cobrar> Cobrar { get; set; }
+    public DbSet<Ventas> Venta { get; set; }
+    public DbSet<Compra> Compra { get; set; }
 }

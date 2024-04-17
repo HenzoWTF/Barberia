@@ -82,7 +82,6 @@
         peladas = await peladasServices.GetPelada(Id);
         Barberos = await barberosServices.GetBarberos();
         factura.FormaDePago = "Efectivo";
-        factura.Fecha = DateTime.Now;
         factura.Total = peladas.PrecioPelada;        
     }
 

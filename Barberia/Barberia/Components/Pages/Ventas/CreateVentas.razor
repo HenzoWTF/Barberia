@@ -211,7 +211,7 @@
                         };
 
                     ventas.VentaDetalle.Add(nuevoDetalle);
-                    ventas.Valor += precioVentaDetalle * Cantidad;
+                    ventas.Valor += precioVentaDetalle;
                     Producto = 0;
                     Cantidad = 0;
                     StateHasChanged();

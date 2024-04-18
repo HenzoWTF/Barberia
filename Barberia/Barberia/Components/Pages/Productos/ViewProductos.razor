@@ -1,0 +1,63 @@
+﻿@page "/ViewProductos/{Id:int}"
+@using Microsoft.AspNetCore.Authorization
+@inject ProductosServices productosService
+@inject NavigationManager navigationManager
+@inject NotificationService notificationServices
+@inject IJSRuntime JSRuntime
+@attribute [Authorize(Roles = "Admin")]
+
+@rendermode InteractiveAuto
+<RadzenNotification />
+<PageTitle>Detalles del producto</PageTitle>
+
+
+<a href="/MenuAdmin" class="w-20 btn btn-lg btn-outline-secondary"><i class="bi bi-arrow-left"></i></a>
+<section class=" gradient-custom">
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center">
+            <div class="fondo " style="border-radius: 1rem;">
+
+                <div class="card-body p-5 text-center">
+                    <h1 class="fw-bold mb-2 text-uppercase">Datos del producto</h1>
+
+                    <div class="tab-content">
+
+                        <div class="col-md-11 mx-auto">
+                            <h3 class="text-center"><strong>Datos de la venta</strong></h3>
+                            <div class="border-primary border border-2">
+                                <div class="card-body">
+                                    <ul class="list-unstyled" style="margin-top: 20px; margin-bottom: 20px;">
+                                        <li><strong>ProveedorId:</strong> @productos.ProductoId</li>
+                                        <li><strong>FechaCreaci&oacute;n:</strong> @productos.FechaCreacion.ToShortDateString()</li>
+                                        <li><strong>Nombre:</strong> @productos.Nombre</li>
+                                        <li><strong>Descripci&oacute;n:</strong> @productos.Descripcion</li>
+                                        <li><strong>Precio de Venta:</strong> @productos.PrecioVenta.ToString("N2")</li>
+                                        <li><strong>Precio de Compra:</strong> @productos.PrecioCompra.ToString("N2")</li>
+                                        <li><strong>Cantidad en almacen:</strong> @productos.Cantidad</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+    private Productos productos { get; set; } = new Productos();
+    public bool Confirmacion = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (Id > 0)
+        {
+            productos = await productosService.GetProducto(Id);
+        }
+    }
+}

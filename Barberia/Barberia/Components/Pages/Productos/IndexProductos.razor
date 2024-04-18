@@ -1,0 +1,209 @@
+﻿@page "/IndexProductos"
+@using Microsoft.AspNetCore.Authorization
+@inject ProductosServices productoService
+@rendermode InteractiveServer
+@attribute [Authorize(Roles = "Admin")]
+
+<a href="/MenuAdmin" class="w-20 btn btn-lg btn-outline-secondary"><i class="bi bi-arrow-left"></i></a>
+<section class=" gradient-custom">
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center">
+            <div class="fondo " style="border-radius: 1rem;">
+
+                <div class="card-body p-5 text-center">
+                    <h1 class="fw-bold mb-2 text-uppercase">Inventario</h1>
+
+
+                    <div class="col-4">
+                        <label>Cantidad de productos:</label>
+                        <span class="badge bg-secondary">@productos.Count()</span>
+                    </div>
+
+                    <div class="justify-content-center">
+
+                        @* Fechas *@
+                        <div class="mb-3">
+                            <div class="row">
+                                <div class="col-3">
+                                    <label class="form-label" for="desde"><strong>Desde:</strong></label>
+                                    <InputDate id="desde" class="form-control" @bind-Value="desde"></InputDate>
+                                </div>
+                                <div class="col-3">
+                                    <label class="form-label" for="hasta"><strong>Hasta:</strong></label>
+                                    <InputDate id="hasta" class="form-control" @bind-Value="hasta"></InputDate>
+                                </div>
+                            </div>
+                        </div>
+
+                        @* Campos a Filtrar *@
+                        <div class="mb-3">
+                            <div class="row align-items-center">
+                                <div class="col-4">
+                                    <label class="form-label" for="filtro"><strong>Campo a Filtrar:</strong></label>
+                                    <InputSelect id="filtro" class="form-select" @bind-Value="filtro">
+                                        <option>Elije una opci&oacute;n</option>
+                                        <option value="id">Id</option>
+                                        <option value="nombre">Nombre</option>
+                                        <option value="Categoria">Categoria</option>
+                                    </InputSelect>
+                                </div>
+                                <div class="col-auto miFlecha">
+                                    <p>→</p>
+                                </div>
+                                <div class="col-4">
+                                    <div class="input-group">
+                                        <InputText class="form-control" @bind-Value="valorFiltro" placeholder="Ingrese un dato para filtrar"></InputText>
+                                        <button type="button" class="btn btn-outline-primary" @onclick="Buscar"><i class="bi bi-search" /></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="tab-content">
+                        <form>
+
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Descripci&oacute;n</th>
+                                        <th>Categoria</th>
+                                        <th>Proveedore</th>
+                                        <th>Precio Compra</th>
+                                        <th>Precio Venta</th>
+                                        <th>Cantidad</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    @if (productos.Count == 0)
+                                    {
+                                        @mensaje
+                                    }
+                                    else
+                                    {
+                                        @foreach (var productos in productos)
+                                        {
+                                            <tr>
+                                                <td>@productos.Nombre</td>
+                                                <td>@productos.Descripcion</td>
+                                                <td>@productos.Categoria</td>
+                                                <td>@productos.Proveedores</td>
+                                                <td>@productos.PrecioCompra.ToString("N2")</td>
+                                                <td>@productos.PrecioVenta.ToString("N2")</td>
+                                                <td>@productos.Cantidad</td>
+                                                <td>
+                                                    <div>
+                                                        <a href="/EditProducto/@productos.ProductoId" class="btn btn-outline-primary"><i class="bi bi-pencil-fill" /></a>
+                                                        <a href="/ViewProductos/@productos.ProductoId" class="btn btn-outline-primary"><i class="bi bi-eye-fill" /></a>
+                                                        <a href="/DeleteProductos/@productos.ProductoId" class="btn btn-outline-danger"><i class="bi bi-trash-fill" /></a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        }
+
+                                    }
+                                </tbody>
+
+                            </table>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+@code {
+    private List<Productos> productos = new List<Productos>();
+    public string filtro { get; set; }
+    public string valorFiltro { get; set; }
+    public DateTime desde { get; set; } = DateTime.Today;
+    public DateTime hasta { get; set; } = DateTime.Today;
+    public string mensaje = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (productos == null || !productos.Any())
+            mensaje = "No hay datos";
+
+        productos = (await productoService.GetProductos()).ToList();
+        StateHasChanged();
+    }
+
+    public async Task Buscar()
+    {
+        if (desde > hasta)
+        {
+            mensaje = "La fecha inicial no puede ser mayor a la fecha final";
+            StateHasChanged();
+            await Nuevo();
+            return;
+        }
+
+        else if (filtro == null)
+        {
+            mensaje = "Debe elegir un método parar filtrar";
+            StateHasChanged();
+            await Nuevo();
+            return;
+        }
+
+        else if (valorFiltro == null)
+        {
+            mensaje = "Debe ingresar un dato";
+            StateHasChanged();
+            await Nuevo();
+            return;
+        }
+
+        List<Productos> listaFiltro = new List<Productos>();
+
+        switch (filtro)
+        {
+            case "id":
+                if (int.TryParse(valorFiltro, out int id))
+                {
+                    var resultadoId = productos.FirstOrDefault(p => p.ProductoId == id);
+                    if (resultadoId != null &&
+                        (resultadoId.FechaCreacion >= desde && resultadoId.FechaCreacion <= hasta))
+                    {
+                        productos.Clear();
+                        productos.Add(resultadoId);
+                    }
+                    else
+                        mensaje = "No se encontraron resultados";
+                }
+                else
+                {
+                    mensaje = "El valor ingresado para TicketId no es válido";
+                }
+                break;
+
+            case "fecha":
+
+                break;
+
+            case "nombre":
+                var resultadoNombre = productos.FirstOrDefault(p => p.Nombre == valorFiltro);
+                if (resultadoNombre != null &&
+                    (resultadoNombre.FechaCreacion >= desde && resultadoNombre.FechaCreacion <= hasta))
+                {
+                    productos.Clear();
+                    productos.Add(resultadoNombre);
+                }
+                break;
+        }
+
+        StateHasChanged();
+        await Nuevo();
+    }
+
+    public async Task Nuevo()
+    {
+        mensaje = string.Empty;
+    }
+}

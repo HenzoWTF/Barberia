@@ -20,12 +20,6 @@ public class Productos
     [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
     public DateTime FechaCreacion { get; set; } = DateTime.Today;
     [Required(ErrorMessage = "Debe elegir una categoria.")]
-    public string Categoria { get; set; } = string.Empty;
-    [Required(ErrorMessage = "Este campo es obligatorio.")]
-    [Range(1, 100000, ErrorMessage = "El campo {0} debe ser mayor que 0 y menor que 100000.")]
-    public string Proveedores { get; set; } = string.Empty;
-    [Required(ErrorMessage = "Este campo es obligatorio.")]
-    [Range(1, 100000, ErrorMessage = "El campo {0} debe ser mayor que 0 y menor que 100000.")]
     public float PrecioVenta { get; set; }
     [Required(ErrorMessage = "Este campo es obligatorio.")]
     [Range(1, 100000, ErrorMessage = "El campo {0} debe ser mayor que 0 y menor que 100000.")]

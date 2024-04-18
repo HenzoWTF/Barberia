@@ -16,8 +16,6 @@ public class ProductosServices(ApplicationDbContext context)
             Nombre = d.Nombre,
             Descripcion = d.Descripcion,
             FechaCreacion = d.FechaCreacion,
-            Categoria = d.Categoria,
-            Proveedores = d.Proveedores,
             Cantidad = d.Cantidad,
             PrecioVenta = d.PrecioVenta,
             PrecioCompra = d.PrecioCompra,

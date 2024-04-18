@@ -56,13 +56,13 @@
                                                         <tr>
                                                             <td>@ObtenerProducto(detalle.ProductoId)</td>
                                                             <td>@detalle.Cantidad</td>
-                                                            <td>@ObtenerProductoPrecio(detalle.ProductoId)</td>
+                                                            <td>@ObtenerProductoPrecio(detalle.ProductoId).ToString("N2")</td>
                                                         </tr>
                                                     }
                                                 </tbody>
                                             </table>
                                             <p><strong>Total de ventas: </strong>@Ventas.VentaDetalle.Count</p>
-                                            <p><strong>Total : </strong>@CalcularTotalVentas()</p>
+                                            <p><strong>Total : </strong>@CalcularTotalVentas().ToString("N2")</p>
                                         }
                                     </div>
                                 </div>

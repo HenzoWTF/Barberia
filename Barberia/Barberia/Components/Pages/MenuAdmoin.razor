@@ -39,6 +39,11 @@
                         <h3 class="fw-bold text-uppercase">Crear Producto</h3>
                     </div>
                 </button>
+                <button class="fondo col-md-6 btn btn-primary rounded mb-5" style="border-radius: 1rem; color: black;" @onclick="() => Inventario()">
+                    <div class="card-body p-5">
+                        <h3 class="fw-bold text-uppercase">Inventario</h3>
+                    </div>
+                </button>
             </div>
         </div>
     </section>
@@ -68,5 +73,9 @@
     private void Producto()
     {
         NavigationManager.NavigateTo("/CreateProducto");
+    }
+    private void Inventario()
+    {
+        NavigationManager.NavigateTo("/IndexProductos");
     }
 }

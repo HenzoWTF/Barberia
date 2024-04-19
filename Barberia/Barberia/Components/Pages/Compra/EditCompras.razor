@@ -25,15 +25,10 @@
                 <div class="fondo col-lg-6 col-xl-6 " style="border-radius: 2rem;">
 
                     <div class="card-body p-5">
-                        <h2 class="fw-bold mb-2 text-uppercase text-center">Editar barberos</h2>
+                        <h2 class="fw-bold mb-2 text-uppercase text-center">Editar compra</h2>
 
                         <div class="row tab-content">
                             <div class="row mb-3">
-                                <div class="col-4">
-                                    @*Compra Id*@
-                                    <label class="form-label" for="CompraId"><strong>CompraId:</strong></label>
-                                    <InputNumber id="CompraId" class="form-control" @bind-Value="Compras.CompraId" readonly></InputNumber>
-                                </div>
                                 <div class="col-4">
                                     @*FechaCreacion*@
                                     <label class="form-label" for="fechaCreacion"><strong>Fecha Creaci&oacute;n:</strong></label>
@@ -112,7 +107,7 @@
 
                             <div class="d-flex justify-content-center mt-3">
                                 <button type="submit" class="w-20 btn btn-lg btn-success"><i class="bi bi-floppy"></i> Agregar</button>
-                                <a href="/MenuFactura" class="w-20 btn btn-lg btn-primary ms-3"><i class="bi bi-arrow-left"></i> Cancelar</a>
+                                <a href="/CompraIndex" class="w-20 btn btn-lg btn-primary ms-3"><i class="bi bi-arrow-left"></i> Cancelar</a>
                             </div>
                         </div>
                     </div>

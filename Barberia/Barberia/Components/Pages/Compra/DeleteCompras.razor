@@ -5,7 +5,6 @@
 @using Microsoft.AspNetCore.Components.Web
 @rendermode InteractiveServer
 @inject ComprasServices comprasServices
-@inject ProveedoresServices proveedoresServices
 @inject ProductosServices productosServices
 @inject NavigationManager navigationManager
 @inject NotificationService notificationServices
@@ -13,17 +12,17 @@
 @attribute [Authorize(Roles = "Admin")]
 
 <RadzenNotification />
-<PageTitle>Eliminar Proveedor</PageTitle>
+<PageTitle>Eliminar Compra</PageTitle>
 
 
-<a href="/MenuAdmin" class="w-20 btn btn-lg btn-outline-secondary"><i class="bi bi-arrow-left"></i></a>
+<a href="/CompraIndex" class="w-20 btn btn-lg btn-outline-secondary"><i class="bi bi-arrow-left"></i></a>
 <section class=" gradient-custom">
     <div class="container py-5 h-100">
         <div class="row d-flex justify-content-center align-items-center">
-            <div class="fondo " style="border-radius: 1rem;">
+            <div class="fondo col-lg-6 col-xl-6" style="border-radius: 1rem;">
 
                 <div class="card-body p-5 text-center">
-                    <h1 class="fw-bold mb-2 text-uppercase">Barberos</h1>
+                    <h1 class="fw-bold mb-2 text-uppercase">Eliminar Compra</h1>
 
                     <div class="tab-content">
 
@@ -32,7 +31,6 @@
                             <div class="border-primmary border border-2 borde">
                                 <div class="card-body">
                                     <ul class="list-unstyled" style="margin-top: 20px; margin-bottom: 20px;">
-                                        <li><strong>ProveedorId:</strong> @Compras.CompraId</li>
                                         <li><strong>FechaCreacion:</strong> @Compras.FecheDeCompra.ToShortDateString()</li>
                                     </ul>
                                 </div>
@@ -72,7 +70,8 @@
                     <div class="d-flex justify-content-center mt-3">
                         <td>
                             <div>
-                                <button @onclick="() => ConfirmarEliminar(Ventas.VentaId)" class="btn btn-outline-danger"><i class="bi bi-trash-fill" /> Eliminar</button>
+                                <a href="/CompraIndex" class="w-20 btn btn-outline-primary ms-3"><i class="bi bi-arrow-left"></i> Volver</a>
+                                <button @onclick="() => ConfirmarEliminar(Compras.CompraId)" class="btn btn-outline-danger"><i class="bi bi-trash-fill" /> Eliminar</button>
                             </div>
                         </td>
                     </div>
@@ -132,7 +131,7 @@
         Confirmacion = true;
     }
 
-	private async Task Eliminar()
+	private async Task Eliminar(int Id)
 	{
 		if (Id != 0)
 		{
@@ -184,18 +183,10 @@
 				};
 			notificationServices.Notify(Mensaje);
 			await Task.Delay(1000);
-			navigationManager.NavigateTo("/CompraIndex");
+            navigationManager.NavigateTo("/CompraIndex");
 		}
 	}
 
-	private async Task ConfirmarEliminar()
-	{
-		bool confirmacion = await JSRuntime.InvokeAsync<bool>("confirm", "¿Está seguro de que desea eliminar esta compra?");
-		if (confirmacion)
-		{
-			await Eliminar();
-		}
-	}
 
 	public string ObtenerProducto(int id)
 	{

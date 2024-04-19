@@ -4,6 +4,9 @@
 @rendermode InteractiveServer
 @attribute [Authorize(Roles = "Admin")]
 
+
+<PageTitle>Producto</PageTitle>
+
 <a href="/MenuAdmin" class="w-20 btn btn-lg btn-outline-secondary"><i class="bi bi-arrow-left"></i></a>
 <section class=" gradient-custom">
     <div class="container py-5 h-100">
@@ -13,49 +16,53 @@
                 <div class="card-body p-5 text-center">
                     <h1 class="fw-bold mb-2 text-uppercase">Inventario</h1>
 
-
-                    <div class="col-4">
-                        <label>Cantidad de productos:</label>
-                        <span class="badge bg-secondary">@productos.Count()</span>
+                    <div class="row justify-content-end">
+                        <div class="col-4 text-end">
+                            <label>Cantidad de productos:</label>
+                            <span class="badge bg-secondary">@productos.Count()</span>
+                        </div>
                     </div>
 
-                    <div class="justify-content-center">
+                    <div class="row justify-content-center">
+                        <div class="col-8">
 
-                        @* Fechas *@
-                        <div class="mb-3">
-                            <div class="row">
-                                <div class="col-3">
-                                    <label class="form-label" for="desde"><strong>Desde:</strong></label>
-                                    <InputDate id="desde" class="form-control" @bind-Value="desde"></InputDate>
-                                </div>
-                                <div class="col-3">
-                                    <label class="form-label" for="hasta"><strong>Hasta:</strong></label>
-                                    <InputDate id="hasta" class="form-control" @bind-Value="hasta"></InputDate>
-                                </div>
-                            </div>
-                        </div>
-
-                        @* Campos a Filtrar *@
-                        <div class="mb-3">
-                            <div class="row align-items-center">
-                                <div class="col-4">
-                                    <label class="form-label" for="filtro"><strong>Campo a Filtrar:</strong></label>
-                                    <InputSelect id="filtro" class="form-select" @bind-Value="filtro">
-                                        <option>Elije una opci&oacute;n</option>
-                                        <option value="id">Id</option>
-                                        <option value="nombre">Nombre</option>
-                                    </InputSelect>
-                                </div>
-                                <div class="col-auto miFlecha">
-                                    <p>→</p>
-                                </div>
-                                <div class="col-4">
-                                    <div class="input-group">
-                                        <InputText class="form-control" @bind-Value="valorFiltro" placeholder="Ingrese un dato para filtrar"></InputText>
-                                        <button type="button" class="btn btn-outline-primary" @onclick="Buscar"><i class="bi bi-search" /></button>
+                            @* Fechas *@
+                            <div class="mb-3">
+                                <div class="row">
+                                    <div class="col-3">
+                                        <label class="form-label" for="desde"><strong>Desde:</strong></label>
+                                        <InputDate id="desde" class="form-control" @bind-Value="desde"></InputDate>
+                                    </div>
+                                    <div class="col-3">
+                                        <label class="form-label" for="hasta"><strong>Hasta:</strong></label>
+                                        <InputDate id="hasta" class="form-control" @bind-Value="hasta"></InputDate>
                                     </div>
                                 </div>
                             </div>
+
+                            @* Campos a Filtrar *@
+                            <div class="mb-3">
+                                <div class="row align-items-center">
+                                    <div class="col-4">
+                                        <label class="form-label" for="filtro"><strong>Campo a Filtrar:</strong></label>
+                                        <InputSelect id="filtro" class="form-select" @bind-Value="filtro">
+                                            <option>Elije una opci&oacute;n</option>
+                                            <option value="id">Id</option>
+                                            <option value="nombre">Nombre</option>
+                                        </InputSelect>
+                                    </div>
+                                    <div class="col-auto miFlecha">
+                                        <p>→</p>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="input-group">
+                                            <InputText class="form-control" @bind-Value="valorFiltro" placeholder="Ingrese un dato para filtrar"></InputText>
+                                            <button type="button" class="btn btn-outline-primary" @onclick="Buscar"><i class="bi bi-search" /></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
 
                     </div>

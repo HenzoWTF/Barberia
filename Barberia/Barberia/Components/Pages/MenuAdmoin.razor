@@ -44,6 +44,11 @@
                         <h3 class="fw-bold text-uppercase">Inventario</h3>
                     </div>
                 </button>
+                <button class="fondo col-md-6 btn btn-primary rounded mb-5" style="border-radius: 1rem; color: black;" @onclick="() => Compra()">
+                    <div class="card-body p-5">
+                        <h3 class="fw-bold text-uppercase">Compra</h3>
+                    </div>
+                </button>
             </div>
         </div>
     </section>
@@ -77,5 +82,9 @@
     private void Inventario()
     {
         NavigationManager.NavigateTo("/IndexProductos");
+    }
+    private void Compra()
+    {
+        NavigationManager.NavigateTo("/CompraIndex");
     }
 }

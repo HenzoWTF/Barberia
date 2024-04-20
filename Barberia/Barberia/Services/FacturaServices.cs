@@ -18,7 +18,8 @@ public class FacturaServices(ApplicationDbContext context)
             FormaDePago = d.FormaDePago,
             BarberoName = d.BarberoName,
             Total = d.Total,
-            Fecha = d.Fecha
+            Fecha = d.Fecha,
+            Cobrada = d.Cobrada
         }).ToListAsync();
     }
     public async Task<Factura?> GetFactura(int id)

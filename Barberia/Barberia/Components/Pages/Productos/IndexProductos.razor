@@ -3,8 +3,10 @@
 @inject ProductosServices productoService
 @rendermode InteractiveServer
 @attribute [Authorize(Roles = "Admin")]
+@inject NotificationService notificationServices
 
 
+<RadzenNotification />
 <PageTitle>Producto</PageTitle>
 
 <a href="/MenuAdmin" class="w-20 btn btn-lg btn-outline-secondary"><i class="bi bi-arrow-left"></i></a>
@@ -135,77 +137,105 @@
         productos = (await productoService.GetProductos()).ToList();
         StateHasChanged();
     }
-
     public async Task Buscar()
     {
         if (desde > hasta)
         {
             mensaje = "La fecha inicial no puede ser mayor a la fecha final";
-            StateHasChanged();
+            NotifyError("Error", mensaje);
             await Nuevo();
             return;
         }
 
-        else if (filtro == null)
+        if (string.IsNullOrEmpty(filtro))
         {
-            mensaje = "Debe elegir un método parar filtrar";
-            StateHasChanged();
+            NotifyError("Error", "Debe elegir un método para filtrar");
             await Nuevo();
             return;
         }
 
-        else if (valorFiltro == null)
+        if (string.IsNullOrEmpty(valorFiltro))
         {
             mensaje = "Debe ingresar un dato";
-            StateHasChanged();
+            NotifyError("Error", mensaje);
             await Nuevo();
             return;
         }
-
-        List<Productos> listaFiltro = new List<Productos>();
 
         switch (filtro)
         {
             case "id":
                 if (int.TryParse(valorFiltro, out int id))
                 {
-                    var resultadoId = productos.FirstOrDefault(p => p.ProductoId == id);
-                    if (resultadoId != null &&
-                        (resultadoId.FechaCreacion >= desde && resultadoId.FechaCreacion <= hasta))
+                    var resultadosId = productos.Where(p => p.ProductoId == id && p.FechaCreacion >= desde && p.FechaCreacion <= hasta).ToList();
+                    if (resultadosId.Any())
                     {
-                        productos.Clear();
-                        productos.Add(resultadoId);
+                        productos = resultadosId;
                     }
                     else
+                    {
                         mensaje = "No se encontraron resultados";
+                        NotifyWarning("Advertencia", mensaje);
+                    }
                 }
                 else
                 {
-                    mensaje = "El valor ingresado para TicketId no es válido";
+                    mensaje = "El valor ingresado para el ID no es válido";
+                    NotifyError("Error", mensaje);
                 }
-                break;
-
-            case "fecha":
-
                 break;
 
             case "nombre":
-                var resultadoNombre = productos.FirstOrDefault(p => p.Nombre == valorFiltro);
-                if (resultadoNombre != null &&
-                    (resultadoNombre.FechaCreacion >= desde && resultadoNombre.FechaCreacion <= hasta))
+                var resultadosNombre = productos.Where(p => p.Nombre == valorFiltro && p.FechaCreacion >= desde && p.FechaCreacion <= hasta).ToList();
+                if (resultadosNombre.Any())
                 {
-                    productos.Clear();
-                    productos.Add(resultadoNombre);
+                    productos = resultadosNombre;
                 }
+                else
+                {
+                    mensaje = "No se encontraron resultados";
+                    NotifyWarning("Advertencia", mensaje);
+                }
+                break;
+
+
+            default:
+                mensaje = "Opción de filtro no válida";
+                NotifyError("Error", mensaje);
                 break;
         }
 
-        StateHasChanged();
         await Nuevo();
     }
+
+    private void NotifyError(string summary, string detail)
+    {
+        var mensajeError = new NotificationMessage
+            {
+                Severity = NotificationSeverity.Error,
+                Summary = summary,
+                Detail = detail,
+                Duration = 1000
+            };
+        notificationServices.Notify(mensajeError);
+    }
+
+    private void NotifyWarning(string summary, string detail)
+    {
+        var mensajeAdvertencia = new NotificationMessage
+            {
+                Severity = NotificationSeverity.Warning,
+                Summary = summary,
+                Detail = detail,
+                Duration = 1000
+            };
+        notificationServices.Notify(mensajeAdvertencia);
+    }
+
 
     public async Task Nuevo()
     {
         mensaje = string.Empty;
+        valorFiltro = string.Empty;
     }
 }

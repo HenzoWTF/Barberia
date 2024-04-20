@@ -25,47 +25,45 @@
 
                     <div class="tab-content">
                         <form>
-                            @*
-                            <div>
-                            <button type="submit" class="w-20 btn btn-lg btn-success"><i class="bi bi-floppy"></i> Aceptar</button>
-                            </div> *@
+                            <div class="table-container" style="max-height: 400px; overflow-y: auto;">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Id</th>
+                                            <th>Fecha de venta</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                    </thead>
 
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>Id</th>
-                                        <th>Fecha de venta</th>
-                                        <th>Acciones</th>
-                                    </tr>
-                                </thead>
-
-                                <tbody>
-                                    @if (ventas.Count == 0)
-                                    {
-                                        @mensaje
-                                    }
-                                    else
-                                    {
-                                        @foreach (var venta in ventas)
+                                    <tbody>
+                                        @if (ventas.Count == 0)
                                         {
-                                            <tr>
-                                                <td>@venta.VentaId</td>
-                                                <td>@venta.Fecha.ToShortDateString()</td>
-                                                <td>
-                                                    <div>
-                                                        <a href="/EditVenta/@venta.VentaId" class="btn btn-outline-primary"><i class="bi bi-pencil-fill" /> Editar</a>
-                                                        <a href="/ViewVenta/@venta.VentaId" class="btn btn-outline-primary"><i class="bi bi-eye" /> View</a>
-                                                        <a href="/DeleteVentas/@venta.VentaId" class="btn btn-outline-danger"><i class="bi bi-trash-fill" /> Eliminar</a>
-                                                    </div>
-                                                </td>
-                                            </tr>
+                                            @mensaje
                                         }
+                                        else
+                                        {
+                                            @foreach (var venta in ventas)
+                                            {
+                                                <tr>
+                                                    <td>@venta.VentaId</td>
+                                                    <td>@venta.Fecha.ToShortDateString()</td>
+                                                    <td>
+                                                        <div>
+                                                            <a href="/EditVenta/@venta.VentaId" class="btn btn-outline-primary"><i class="bi bi-pencil-fill" /> Editar</a>
+                                                            <a href="/ViewVenta/@venta.VentaId" class="btn btn-outline-primary"><i class="bi bi-eye" /> View</a>
+                                                            <a href="/DeleteVentas/@venta.VentaId" class="btn btn-outline-danger"><i class="bi bi-trash-fill" /> Eliminar</a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            }
 
 
-                                    }
-                                </tbody>
+                                        }
+                                    </tbody>
 
-                            </table>
+                                </table>
+
+                            </div>
                         </form>
                     </div>
                 </div>

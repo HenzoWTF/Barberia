@@ -36,13 +36,6 @@
                                         {
                                             <li><strong>Tipo de pelada:</strong> @peladas.FirstOrDefault()?.peladasName</li>
                                         }
-                                        @if (Barberos != null)
-                                        {
-                                            @foreach (var barbero in Barberos)
-                                            {
-                                                <li><strong>Correo Electrónico:</strong> @barbero.Celular</li>
-                                            }
-                                        }
                                         <li><strong>Teléfono:</strong> @factura.FormaDePago</li>
                                         <div class="justify-content-end">
                                         <li><strong>Total:</strong> @factura.Total</li>

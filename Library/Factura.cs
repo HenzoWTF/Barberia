@@ -13,7 +13,7 @@ public class Factura
     public int FacturaId { get; set; }
     public string BarberoName { get; set; }
 
-    public DateTime Fecha = DateTime.Now;
+    public DateTime Fecha = DateTime.Today;
     public string Name { get; set; }
     public string FormaDePago { get; set; }
     public float Total { get; set; }

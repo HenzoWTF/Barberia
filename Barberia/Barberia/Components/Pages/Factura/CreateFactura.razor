@@ -10,6 +10,7 @@
 @attribute [Authorize(Roles = "Admin")]
 
 <RadzenNotification />
+<PageTitle>Factura</PageTitle>
 <EditForm Model="@factura" OnValidSubmit="Guardar" FormName="factura">
     <DataAnnotationsValidator />
 
@@ -38,7 +39,7 @@
                                     <div>
                                         <h4 class="fw-bold mb-2 ">Nombre del cliente</h4>
                                         <div class="input-group">
-                                            <InputText id="cantidad" class="form-control" @bind-Value="factura.Name" placeholder="Anderson"></InputText>
+                                            <InputText id="cantidad" class="form-control" @bind-Value="factura.Name" placeholder="General" readonly></InputText>
                                         </div>
                                     </div>
 
@@ -87,6 +88,8 @@
 
     public async Task Guardar()
     {
+        factura.BarberoName = Barbero;
+        factura.Name = "General";
 
         if (string.IsNullOrEmpty(factura.BarberoName) && string.IsNullOrEmpty(factura.Name))
         {
@@ -100,7 +103,6 @@
             notificationServices.Notify(Mensaje);
             return;
         }
-        factura.BarberoName = Barbero;
         var response = await facturaServices.PostFacturas(factura);
         if (response != null)
         {

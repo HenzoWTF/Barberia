@@ -1,0 +1,87 @@
+﻿    @page "/Cuadre"
+    @inject CuadreServices cuadreServices
+    @rendermode InteractiveServer
+<PageTitle>Cuadre</PageTitle>
+
+<a href="/MenuAdmin" class="w-20 btn btn-lg btn-outline-secondary"><i class="bi bi-arrow-left"></i></a>
+<section class="vh-100 gradient-custom">
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center">
+            <div class="fondo col-lg-6 col-xl-6 p-4 rounded">
+                <h2 class="fw-bold mb-4 text-uppercase text-center text-black">Cuadre</h2>
+                <div class="card-body bg-white rounded p-4">
+                    <div class="mb-4">
+                        <div>
+                            <label class="text-dark">Opción:</label>
+                            <select class="form-select mb-3" @bind="selectedOption">
+                                <option value="diario">Diario</option>
+                                <option value="semanal">Semanal</option>
+                            </select>
+                            <button class="btn btn-primary" @onclick="CalcularCuadre">Calcular</button>
+                        </div>
+                        @if (cuadre != null)
+                        {
+                            <div>
+                                <h4>@(selectedOption == "diario" ? "Cuadre Diario" : "Cuadre Semanal")</h4>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <p class="fs-5 fw-bold text-dark">Fecha:</p>
+                                    <p class="fs-5 text-dark">@cuadre.FechaCuadre.ToShortDateString()</p>
+                                </div>
+                                <div class="col-sm-6">
+                                    <p class="fs-5 fw-bold text-dark">Ingresos:</p>
+                                    <p class="fs-5 text-dark">@cuadre.Ingresos</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <p class="fs-5 fw-bold text-dark">Gastos:</p>
+                                    <p class="fs-5 text-dark">@cuadre.Gastos</p>
+                                </div>
+                                <div class="col-sm-6">
+                                    <p class="fs-5 fw-bold text-dark">Total:</p>
+                                    <p class="fs-5 text-dark">@cuadre.Total</p>
+                                </div>
+                            </div>
+                        }
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+@code {
+    public string selectedOption = "diario";
+    public Library.Cuadre cuadre = new Library.Cuadre();
+    private bool cuadreRealizadoHoy = false;
+
+    private async Task CalcularCuadre()
+    {
+        if (!cuadreRealizadoHoy)
+        {
+            if (selectedOption == "diario")
+            {
+                DateTime fecha = DateTime.Today;
+                cuadre = await cuadreServices.CalcularCuadreDiario(fecha);
+                await cuadreServices.GuardarCuadreEnBaseDeDatos(fecha);
+            }
+            else if (selectedOption == "semanal")
+            {
+                DateTime fechaInicioSemana = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek);
+                cuadre = await cuadreServices.CalcularCuadreSemanal(fechaInicioSemana);
+                await cuadreServices.GuardarCuadreEnBaseDeDatos(fechaInicioSemana);
+            }
+            cuadreRealizadoHoy = true;
+        }
+        else
+        {
+
+        }
+    }
+}
+
+}

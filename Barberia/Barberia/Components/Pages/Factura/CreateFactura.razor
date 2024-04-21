@@ -27,6 +27,11 @@
                                 <div>
                                     <div>
                                         <label>Barbero</label>
+                                        <div class="col-4">
+                                            @*FechaCreacion*@
+                                            <label class="form-label" for="fechaCreacion"><strong>Fecha Creaci&oacute;n:</strong></label>
+                                            <InputDate id="fechaCreacion" class="form-control" @bind-Value="factura.Fecha" readonly></InputDate>
+                                        </div>
                                         <InputSelect id="NombreC" class="form-select" @bind-Value="Barbero">
                                             <option value="">Seleccionar Barbero</option>
                                             @foreach (var item in Barberos)
@@ -90,7 +95,6 @@
     {
         factura.BarberoName = Barbero;
         factura.Name = "General";
-        factura.Fecha = DateTime.Now;
 
         if (string.IsNullOrEmpty(factura.BarberoName) && string.IsNullOrEmpty(factura.Name))
         {

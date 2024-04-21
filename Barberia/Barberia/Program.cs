@@ -41,6 +41,7 @@ builder.Services.AddScoped<ComprasServices>();
 builder.Services.AddScoped<ProductosServices>();
 builder.Services.AddScoped<VentasServices>();
 builder.Services.AddScoped<CobrarServices>();
+builder.Services.AddScoped<CuadreServices>();
 builder.Services.AddBlazoredModal();
 
 

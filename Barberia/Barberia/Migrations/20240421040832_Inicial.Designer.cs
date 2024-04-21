@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Barberia.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240418025147_Ventas")]
-    partial class Ventas
+    [Migration("20240421040832_Inicial")]
+    partial class Inicial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -188,15 +188,36 @@ namespace Barberia.Migrations
                     b.Property<int>("ProductoId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Proveedor")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("CompraDetalleId");
 
                     b.HasIndex("CompraId");
 
                     b.ToTable("CompraDetalle");
+                });
+
+            modelBuilder.Entity("Library.Cuadre", b =>
+                {
+                    b.Property<int>("CuadreId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CuadreId"));
+
+                    b.Property<DateTime>("FechaCuadre")
+                        .HasColumnType("datetime2");
+
+                    b.Property<float>("Gastos")
+                        .HasColumnType("real");
+
+                    b.Property<float>("Ingresos")
+                        .HasColumnType("real");
+
+                    b.Property<float>("Total")
+                        .HasColumnType("real");
+
+                    b.HasKey("CuadreId");
+
+                    b.ToTable("Cuadre");
                 });
 
             modelBuilder.Entity("Library.Factura", b =>
@@ -216,6 +237,9 @@ namespace Barberia.Migrations
 
                     b.Property<bool>("Cobrada")
                         .HasColumnType("bit");
+
+                    b.Property<DateTime>("Fecha")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("FormaDePago")
                         .IsRequired()
@@ -266,10 +290,6 @@ namespace Barberia.Migrations
                     b.Property<int>("Cantidad")
                         .HasColumnType("int");
 
-                    b.Property<string>("Categoria")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Descripcion")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -286,10 +306,6 @@ namespace Barberia.Migrations
 
                     b.Property<float>("PrecioVenta")
                         .HasColumnType("real");
-
-                    b.Property<string>("Proveedores")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ProductoId");
 

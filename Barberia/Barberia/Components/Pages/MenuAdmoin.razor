@@ -19,6 +19,11 @@
                         <h3 class="fw-bold text-uppercase">Crear Producto</h3>
                     </div>
                 </button>
+                <button class="fondo col-md-6 btn btn-primary rounded mb-5" style="border-radius: 1rem; color: black;" @onclick="() => Peladas()">
+                    <div class="card-body p-5">
+                        <h3 class="fw-bold text-uppercase">Crear Peladas</h3>
+                    </div>
+                </button>
                 <button class="fondo col-md-6 btn btn-primary rounded mb-5" style="border-radius: 1rem; color: black;" @onclick="() => Factura()">
                     <div class="card-body p-5">
                         <h3 class="fw-bold text-uppercase">Ver Factura</h3>
@@ -49,6 +54,11 @@
                         <h3 class="fw-bold text-uppercase">Cobrar</h3>
                     </div>
                 </button>
+                <button class="fondo col-md-6 btn btn-primary rounded mb-5" style="border-radius: 1rem; color: black;" @onclick="() => Cuadre()">
+                    <div class="card-body p-5">
+                        <h3 class="fw-bold text-uppercase">Cuadre</h3>
+                    </div>
+                </button>
             </div>
         </div>
     </section>
@@ -58,6 +68,10 @@
     private void Barbero()
     {
         NavigationManager.NavigateTo("/CreateBarbero");
+    }
+    private void Peladas()
+    {
+        NavigationManager.NavigateTo("/CreatePelada");
     }
     private void EliminarBarbero()
     {
@@ -86,5 +100,9 @@
     private void Compra()
     {
         NavigationManager.NavigateTo("/CompraIndex");
+    }
+    private void Cuadre()
+    {
+        NavigationManager.NavigateTo("/Cuadre");
     }
 }

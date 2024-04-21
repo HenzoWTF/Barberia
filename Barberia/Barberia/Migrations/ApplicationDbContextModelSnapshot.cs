@@ -192,6 +192,31 @@ namespace Barberia.Migrations
                     b.ToTable("CompraDetalle");
                 });
 
+            modelBuilder.Entity("Library.Cuadre", b =>
+                {
+                    b.Property<int>("CuadreId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CuadreId"));
+
+                    b.Property<DateTime>("FechaCuadre")
+                        .HasColumnType("datetime2");
+
+                    b.Property<float>("Gastos")
+                        .HasColumnType("real");
+
+                    b.Property<float>("Ingresos")
+                        .HasColumnType("real");
+
+                    b.Property<float>("Total")
+                        .HasColumnType("real");
+
+                    b.HasKey("CuadreId");
+
+                    b.ToTable("Cuadre");
+                });
+
             modelBuilder.Entity("Library.Factura", b =>
                 {
                     b.Property<int>("FacturaId")
@@ -209,6 +234,9 @@ namespace Barberia.Migrations
 
                     b.Property<bool>("Cobrada")
                         .HasColumnType("bit");
+
+                    b.Property<DateTime>("Fecha")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("FormaDePago")
                         .IsRequired()
